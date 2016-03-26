@@ -1,11 +1,11 @@
 'use strict';
 
 class PubSub {
-  constructor(address) {
+  constructor(address, options) {
     this.socket = new WebSocket(address);
     this.connected = false;
     this.client = this.clientid();
-
+    this.commonName = (options.commonName) ? options.commonName : 'Anonymous';
     this.socket.onopen = event => {
       this.connected = true;
     }
@@ -42,6 +42,7 @@ class PubSub {
         metadata: {
           time: Date.now(),
           client: this.client,
+          commonName: this.commonName,
           type: 'publish'
         }
       }, payload => {
@@ -65,6 +66,7 @@ class PubSub {
         metadata: {
           time: Date.now(),
           client: this.client,
+          commonName: this.commonName,
           type: 'subscribe'
         }
       }, payload => {

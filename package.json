@@ -1,7 +1,7 @@
 {
-  "name": "freesub-client",
+  "name": "jsps-client",
   "version": "0.0.1",
-  "description": "Free PubSub aas",
+  "description": "JavaScript Postal Service - Free, and simple to use JavaScript messaging for building realtime applications.",
   "main": "dist/freesub.js",
   "scripts": {
     "build": "babel src -d build",
@@ -11,7 +11,10 @@
     "type": "git",
     "url": "https://github.com/wski/freesub-client.git"
   },
-  "author": "",
+  "authors": [
+    "wski <contact.mattdylan@gmail.com>",
+    "hoganmaps <chris@hogan.io>"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/wski/freesub-client/issues"

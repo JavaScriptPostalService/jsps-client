@@ -1,4 +1,6 @@
-var Shout = new PubSub('ws://localhost:3000');
+var Shout = new PubSub('ws://localhost:3000', {
+  commonName: 'mdwisniewski'
+});
 
 document.getElementById('send').onclick = function(e){
   Shout.publish('General', {
