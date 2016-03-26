@@ -57,6 +57,32 @@ class PubSub {
     }
   }
 
+  clients(channel, data, privateKey) {
+    // If we're connected, let's go ahead and publish our payload.
+    if (this.connected) {
+      // Safely stringify our data before sending it to the server.
+      this.stringify({
+        channel,
+        privateKey,
+        payload: data,
+        metadata: {
+          time: Date.now(),
+          client: this.client,
+          commonName: this.commonName,
+          type: 'clients'
+        }
+      }, payload => {
+        this.socket.send(payload);
+      });
+    } else {
+      // Crap, Something is wrong and we're not connected yet, let's try again later.
+      console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+      setTimeout(() => {
+        this.clients(channel, data, privateKey);
+      }, 500);
+    }
+  }
+
   subscribe(channel, cb, privateKey) {
     if (this.connected) {
       // Safely stringify our data before sending it to the server.

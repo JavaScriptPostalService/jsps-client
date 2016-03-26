@@ -12,3 +12,5 @@ Shout.subscribe('General', msg => {
   document.getElementById('data').innerHTML += '\n' + JSON.stringify(msg)
   console.log(msg);
 });
+
+Shout.clients('General');

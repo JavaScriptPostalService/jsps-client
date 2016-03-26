@@ -5,7 +5,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var PubSub = function () {
-  function PubSub(address) {
+  function PubSub(address, options) {
     var _this = this;
 
     _classCallCheck(this, PubSub);
@@ -13,7 +13,7 @@ var PubSub = function () {
     this.socket = new WebSocket(address);
     this.connected = false;
     this.client = this.clientid();
-
+    this.commonName = options.commonName ? options.commonName : 'Anonymous';
     this.socket.onopen = function (event) {
       _this.connected = true;
     };
@@ -54,6 +54,7 @@ var PubSub = function () {
           metadata: {
             time: Date.now(),
             client: this.client,
+            commonName: this.commonName,
             type: 'publish'
           }
         }, function (payload) {
@@ -68,9 +69,38 @@ var PubSub = function () {
       }
     }
   }, {
+    key: 'clients',
+    value: function clients(channel, data, privateKey) {
+      var _this3 = this;
+
+      // If we're connected, let's go ahead and publish our payload.
+      if (this.connected) {
+        // Safely stringify our data before sending it to the server.
+        this.stringify({
+          channel: channel,
+          privateKey: privateKey,
+          payload: data,
+          metadata: {
+            time: Date.now(),
+            client: this.client,
+            commonName: this.commonName,
+            type: 'clients'
+          }
+        }, function (payload) {
+          _this3.socket.send(payload);
+        });
+      } else {
+        // Crap, Something is wrong and we're not connected yet, let's try again later.
+        console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+        setTimeout(function () {
+          _this3.clients(channel, data, privateKey);
+        }, 500);
+      }
+    }
+  }, {
     key: 'subscribe',
     value: function subscribe(channel, cb, privateKey) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.connected) {
         // Safely stringify our data before sending it to the server.
@@ -80,11 +110,12 @@ var PubSub = function () {
           metadata: {
             time: Date.now(),
             client: this.client,
+            commonName: this.commonName,
             type: 'subscribe'
           }
         }, function (payload) {
-          _this3.socket.send(payload);
-          _this3.socket.onmessage = function (msg) {
+          _this4.socket.send(payload);
+          _this4.socket.onmessage = function (msg) {
             if (JSON.parse(msg.data).channel === channel) {
               cb(JSON.parse(msg.data));
             }
@@ -94,7 +125,7 @@ var PubSub = function () {
         // Crap, Something is wrong and we're not connected yet, let's try again later.
         console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
         setTimeout(function () {
-          _this3.subscribe(channel, cb, privateKey);
+          _this4.subscribe(channel, cb, privateKey);
         }, 500);
       }
     }
