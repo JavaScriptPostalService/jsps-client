@@ -23,7 +23,7 @@ var PubSub = function () {
     key: 'clientid',
     value: function clientid() {
       var d = new Date().getTime();
-      var uuid = 'client-xxxxxxxx'.replace(/[xy]/g, function (c) {
+      var uuid = 'client-xxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
         return (c == 'x' ? r : r & 0x3 | 0x8).toString(16);
@@ -41,18 +41,15 @@ var PubSub = function () {
     }
   }, {
     key: 'publish',
-    value: function publish(channel, data, attempt) {
+    value: function publish(channel, data, privateKey) {
       var _this2 = this;
 
       // If we're connected, let's go ahead and publish our payload.
       if (this.connected) {
-        // It looks like our first attempt failed, let's let them know it went through finally.
-        if (attempt) {
-          console.log('Connection established. Successfully sent payload after ' + attempt + ' attempt(s).');
-        }
         // Safely stringify our data before sending it to the server.
         this.stringify({
           channel: channel,
+          privateKey: privateKey,
           payload: data,
           metadata: {
             time: Date.now(),
@@ -66,24 +63,20 @@ var PubSub = function () {
         // Crap, Something is wrong and we're not connected yet, let's try again later.
         console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
         setTimeout(function () {
-          var attempts = attempt ? attempt : 0;
-          _this2.publish(channel, data, attempts + 1);
+          _this2.publish(channel, data, privateKey);
         }, 500);
       }
     }
   }, {
     key: 'subscribe',
-    value: function subscribe(channel, cb, attempt) {
+    value: function subscribe(channel, cb, privateKey) {
       var _this3 = this;
 
       if (this.connected) {
-        // It looks like our first attempt failed, let's let them know it went through finally.
-        if (attempt) {
-          console.log('Connection established. Successfully sent payload after ' + attempt + ' attempt(s).');
-        }
         // Safely stringify our data before sending it to the server.
         this.stringify({
           channel: channel,
+          privateKey: privateKey,
           metadata: {
             time: Date.now(),
             client: this.client,
@@ -101,8 +94,7 @@ var PubSub = function () {
         // Crap, Something is wrong and we're not connected yet, let's try again later.
         console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
         setTimeout(function () {
-          var attempts = attempt ? attempt : 0;
-          _this3.subscribe(channel, cb, attempts);
+          _this3.subscribe(channel, cb, privateKey);
         }, 500);
       }
     }

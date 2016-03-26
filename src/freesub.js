@@ -13,7 +13,7 @@ class PubSub {
 
   clientid() {
     let d = new Date().getTime();
-    let uuid = 'client-xxxxxxxx'.replace(/[xy]/g, c => {
+    let uuid = 'client-xxxxxxxxxxxxxxxx'.replace(/[xy]/g, c => {
         var r = (d + Math.random() * 16 ) % 16 | 0;
         d = Math.floor(d/16);
         return (c == 'x' ? r : (r&0x3|0x8)).toString(16);
@@ -31,16 +31,13 @@ class PubSub {
     }
   }
 
-  publish(channel, data, attempt) {
+  publish(channel, data, privateKey) {
     // If we're connected, let's go ahead and publish our payload.
     if (this.connected) {
-      // It looks like our first attempt failed, let's let them know it went through finally.
-      if (attempt) {
-        console.log(`Connection established. Successfully sent payload after ${attempt} attempt(s).`);
-      }
       // Safely stringify our data before sending it to the server.
       this.stringify({
         channel,
+        privateKey,
         payload: data,
         metadata: {
           time: Date.now(),
@@ -54,21 +51,17 @@ class PubSub {
       // Crap, Something is wrong and we're not connected yet, let's try again later.
       console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
       setTimeout(() => {
-        let attempts = (attempt) ? attempt : 0;
-        this.publish(channel, data, attempts + 1);
+        this.publish(channel, data, privateKey);
       }, 500);
     }
   }
 
-  subscribe(channel, cb, attempt) {
+  subscribe(channel, cb, privateKey) {
     if (this.connected) {
-      // It looks like our first attempt failed, let's let them know it went through finally.
-      if (attempt) {
-        console.log(`Connection established. Successfully sent payload after ${attempt} attempt(s).`);
-      }
       // Safely stringify our data before sending it to the server.
       this.stringify({
         channel,
+        privateKey,
         metadata: {
           time: Date.now(),
           client: this.client,
@@ -86,8 +79,7 @@ class PubSub {
       // Crap, Something is wrong and we're not connected yet, let's try again later.
       console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
       setTimeout(() => {
-        let attempts = (attempt) ? attempt : 0;
-        this.subscribe(channel, cb, attempts);
+        this.subscribe(channel, cb, privateKey);
       }, 500);
     }
   }

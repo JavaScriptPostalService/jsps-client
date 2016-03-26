@@ -1,4 +1,4 @@
-var Shout = new PubSub('ws://localhost:3000/ps');
+var Shout = new PubSub('ws://localhost:3000');
 
 document.getElementById('send').onclick = function(e){
   Shout.publish('General', {
