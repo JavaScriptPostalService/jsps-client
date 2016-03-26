@@ -2,7 +2,7 @@
   "name": "jsps-client",
   "version": "0.0.1",
   "description": "JavaScript Postal Service - Free, and simple to use JavaScript messaging for building realtime applications.",
-  "main": "dist/freesub.js",
+  "main": "dist/jsps.js",
   "scripts": {
     "build": "babel src -d build",
     "test": "echo \"Error: no test specified\" && exit 1"

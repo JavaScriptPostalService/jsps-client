@@ -1,6 +1,6 @@
 'use strict';
 
-class PubSub {
+class jsps {
   constructor(address, options) {
     this.socket = new WebSocket(address);
     this.connected = false;

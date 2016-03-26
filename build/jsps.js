@@ -4,11 +4,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var PubSub = function () {
-  function PubSub(address, options) {
+var jsps = function () {
+  function jsps(address, options) {
     var _this = this;
 
-    _classCallCheck(this, PubSub);
+    _classCallCheck(this, jsps);
 
     this.socket = new WebSocket(address);
     this.connected = false;
@@ -19,7 +19,7 @@ var PubSub = function () {
     };
   }
 
-  _createClass(PubSub, [{
+  _createClass(jsps, [{
     key: 'clientid',
     value: function clientid() {
       var d = new Date().getTime();
@@ -131,7 +131,7 @@ var PubSub = function () {
     }
   }]);
 
-  return PubSub;
+  return jsps;
 }();
 
 ;

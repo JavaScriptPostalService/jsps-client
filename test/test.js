@@ -1,16 +1,16 @@
-var Shout = new PubSub('ws://localhost:3000', {
+var Postbox = new jsps('ws://198.11.254.137:3000/', {
   commonName: 'mdwisniewski'
 });
 
 document.getElementById('send').onclick = function(e){
-  Shout.publish('General', {
+  Postbox.publish('General', {
     message: document.getElementById('message').value
   });
 }
 
-Shout.subscribe('General', msg => {
+Postbox.subscribe('General', msg => {
   document.getElementById('data').innerHTML += '\n' + JSON.stringify(msg)
   console.log(msg);
 });
 
-Shout.clients('General');
+Postbox.clients('General');
