@@ -8,6 +8,9 @@ class jsps {
     this.commonName = (options.commonName) ? options.commonName : 'Anonymous';
     this.socket.onopen = event => {
       this.connected = true;
+      window.onbeforeunload = () => {
+        this.socket.close();
+      };
     }
   }
 
@@ -101,6 +104,20 @@ class jsps {
           if (JSON.parse(msg.data).channel === channel) {
             cb(JSON.parse(msg.data));
           }
+        };
+        window.onbeforeunload = () => {
+          this.stringify({
+            channel,
+            privateKey,
+            metadata: {
+              time: Date.now(),
+              client: this.client,
+              commonName: this.commonName,
+              type: 'unsubscribe'
+            }
+          }, payload => {
+            this.socket.send(payload);
+          });
         };
       });
     } else {

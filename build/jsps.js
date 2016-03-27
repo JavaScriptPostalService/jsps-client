@@ -16,6 +16,9 @@ var jsps = function () {
     this.commonName = options.commonName ? options.commonName : 'Anonymous';
     this.socket.onopen = function (event) {
       _this.connected = true;
+      window.onbeforeunload = function () {
+        _this.socket.close();
+      };
     };
   }
 
@@ -119,6 +122,20 @@ var jsps = function () {
             if (JSON.parse(msg.data).channel === channel) {
               cb(JSON.parse(msg.data));
             }
+          };
+          window.onbeforeunload = function () {
+            _this4.stringify({
+              channel: channel,
+              privateKey: privateKey,
+              metadata: {
+                time: Date.now(),
+                client: _this4.client,
+                commonName: _this4.commonName,
+                type: 'unsubscribe'
+              }
+            }, function (payload) {
+              _this4.socket.send(payload);
+            });
           };
         });
       } else {
