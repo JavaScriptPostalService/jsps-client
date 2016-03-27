@@ -60,7 +60,9 @@ class jsps {
     }
   }
 
-  clients(channel, data, privateKey) {
+  clients(channel, data, options) {
+    let privateKey = (options.privateKey) ? options.privateKey : false;
+    
     // If we're connected, let's go ahead and publish our payload.
     if (this.connected) {
       // Safely stringify our data before sending it to the server.
@@ -86,12 +88,15 @@ class jsps {
     }
   }
 
-  subscribe(channel, cb, privateKey) {
+  subscribe(channel, cb, options) {
+    let privateKey = (options.privateKey) ? options.privateKey : false;
+
     if (this.connected) {
       // Safely stringify our data before sending it to the server.
       this.stringify({
         channel,
         privateKey,
+        noself: (options.noself) ? options.noself : false,
         metadata: {
           time: Date.now(),
           client: this.client,
