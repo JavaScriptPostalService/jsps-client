@@ -166,9 +166,11 @@
       this.client = this.clientid();
       this.commonName = options.commonName ? options.commonName : 'A Random Postman.';
 
+      // Fired when the connection is made to the server
       this.socket.onopen = function (event) {
         _this.connected = true;
 
+        // Make sure we tell the server we're leaving.
         window.onbeforeunload = function () {
           _this.socket.close();
         };

@@ -239,3 +239,4 @@ var jsps = function () {
   }]);
   return jsps;
 }();
+module.exports = jsps;

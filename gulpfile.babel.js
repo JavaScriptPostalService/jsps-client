@@ -11,7 +11,7 @@ const connect = require('gulp-connect')
 const bump = require('gulp-bump')
 const git = require('gulp-git')
 const conventionalGithubReleaser = require('conventional-github-releaser')
-
+const insert = require('gulp-insert')
 
 // Configs for all tasks
 // Comments are just examples how to add posible configurations to the tasks
@@ -48,9 +48,14 @@ const exampleServConf = {
 gulp.task('server:example', () => connect.server(exampleServConf))
 gulp.task('reload-js', () => gulp.src('build/*.js').pipe(connect.reload()))
 
+gulp.task('npmify', () => {
+  gulp.src('build/jsps.js').pipe(insert.append('\nmodule.exports = jsps;\n')).pipe(gulp.dest('build/module'))
+})
+
+
 gulp.task('build:iife', () => rollup(rollupConf).then((bundle) => bundle.write(iifeBundleConf)))
 gulp.task('build:cjs', () => rollup(rollupConf).then((bundle) => bundle.write(cjsBundleConf)))
-gulp.task('build', ['build:cjs', 'build:iife'])
+gulp.task('build', ['build:cjs', 'build:iife', 'npmify'])
 gulp.task('clean', () => del(['build']) )
 
 gulp.task('watch', () => {
