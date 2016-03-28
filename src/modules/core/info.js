@@ -1,3 +1,11 @@
+/**
+ * modInfo module.
+ * @module core/modInfo
+ * @param {string} channel - the channel to look at
+ * @param {object} data - additional information for request
+ * @param {object} opts - additional options for subscriptions
+ * @param {this} _this - this inheratance
+*/
 export const modInfo = (channel, data, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;

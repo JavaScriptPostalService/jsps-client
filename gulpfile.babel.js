@@ -12,6 +12,7 @@ const bump = require('gulp-bump')
 const git = require('gulp-git')
 const conventionalGithubReleaser = require('conventional-github-releaser')
 const insert = require('gulp-insert')
+const jsdoc = require('gulp-jsdoc3');
 
 // Configs for all tasks
 // Comments are just examples how to add posible configurations to the tasks
@@ -47,6 +48,11 @@ const exampleServConf = {
 }
 gulp.task('server:example', () => connect.server(exampleServConf))
 gulp.task('reload-js', () => gulp.src('build/*.js').pipe(connect.reload()))
+
+gulp.task('doc', function(cb) {
+  gulp.src(['./src/**/*.js'], {read: false})
+      .pipe(jsdoc(cb));
+});
 
 gulp.task('npmify', () => {
   gulp.src('build/catsnake.js').pipe(insert.append('\nmodule.exports = CatSnake;\n')).pipe(gulp.dest('build/module'))

@@ -1,3 +1,8 @@
+/**
+ * modClientid module.
+ * @module core/modClientid
+ * @return {string} - Returns a new random, unique clientid
+ */
 export const modClientid = () => {
   let d = new Date().getTime();
   let uuid = 'client-xxxxxxxx'.replace(/[xy]/g, c => {

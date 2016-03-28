@@ -1,6 +1,6 @@
 {
-  "name": "catsnake-client",
-  "version": "0.0.1",
+  "name": "catsnake",
+  "version": "0.0.2",
   "description": "CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.",
   "main": "build/mod/catsnake.js",
   "scripts": {
@@ -40,11 +40,10 @@
     "rollup-plugin-babel": "^2.4.0",
     "rollup-plugin-commonjs": "^2.2.1",
     "rollup-plugin-node-resolve": "^1.5.0",
-    "run-sequence": "^1.1.5"
-  },
-  "dependencies": {
+    "run-sequence": "^1.1.5",
     "babel-eslint": "^6.0.0",
     "eslint": "^2.5.1",
-    "eslint-config-google": "^0.4.0"
+    "eslint-config-google": "^0.4.0",
+    "gulp-jsdoc3": "^0.2.1"
   }
 }

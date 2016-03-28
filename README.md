@@ -2,6 +2,15 @@
 
 CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.
 
+## What is CatSnake JS?
+
+CatSnake JS is a PubSub solution that allows realtime communications between clients and
+devices. With CatSnake you can simply subscribe a device to a channel and any time
+a JavaScript object is published to that channel your device or client will be notified.
+
+The best part is it's incredibly fast. CatSnake uses WebSockets for communication
+which are blazing fast. For practicle use cases check out our website over at http://catsnake.io
+
 ## Usage
 
 ### Setup
@@ -65,12 +74,12 @@ CatSnake.publish('General', msg => {
 }, 'ShhThisIsAPrivateChannel');
 ```
 
-### Clients
+### Info
 
-Nice, now let's get a list of all the connected clients.
+Nice, now let's get info from the channel, this will return information like connected clients, author, etc.
 
 ```javascript
-CatSnake.clients('General');
+CatSnake.info('General');
 ```
 
 ### Unsubscribe

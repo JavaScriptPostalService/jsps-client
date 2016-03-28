@@ -45,14 +45,14 @@ class CatSnake {
     return modClientid();
   }
 
-  static stringify(data, cb) {
+  static stringify(data, callback) {
     /**
      * Tries to return a stringified object.
      * @function modStringify
      * @param {object} data - the object to attempt to stringify
      * @callback {string} - Returns a stringified object
     */
-    return modStringify(data, cb);
+    return modStringify(data, callback);
   }
 
   publish(channel, data, privateKey) {
@@ -79,15 +79,15 @@ class CatSnake {
     modInfo(channel, data, opts, this);
   }
 
-  subscribe(channel, cb, opts) {
+  subscribe(channel, callback, opts) {
     /**
      * Subscribe to a channel
      * @function modSubscribe
      * @param {string} channel - the channel to subscribe to
-     * @callback {function} cb - new messages are returned here via msg
+     * @callback {function} callback - new messages are returned here via msg
      * @param {object} opts - additional options for subscriptions
      * @param {this} this - this inheratance
     */
-    modSubscribe(channel, cb, opts, this);
+    modSubscribe(channel, callback, opts, this);
   }
 }
