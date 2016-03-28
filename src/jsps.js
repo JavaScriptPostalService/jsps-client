@@ -25,9 +25,11 @@ class jsps {
     this.commonName = (options.commonName) ?
       options.commonName : 'A Random Postman.';
 
+    // Fired when the connection is made to the server
     this.socket.onopen = event => {
       this.connected = true;
 
+      // Make sure we tell the server we're leaving.
       window.onbeforeunload = () => {
         this.socket.close();
       };
