@@ -1,6 +1,6 @@
 # CatSnake JS
 
-Docs coming soon
+CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.
 
 ## Usage
 
