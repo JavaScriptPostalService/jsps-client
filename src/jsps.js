@@ -1,11 +1,11 @@
 'use strict';
 
 import {
-  clientid,
-  stringify,
-  publish,
-  clients,
-  subscribe
+  mod_clientid,
+  mod_stringify,
+  mod_publish,
+  mod_clients,
+  mod_subscribe
 } from './modules/core/index';
 
 class jsps {
@@ -24,22 +24,22 @@ class jsps {
   }
 
   clientid() {
-    return clientid();
-  };
+    return mod_clientid();
+  }
 
   stringify(data, cb) {
-    return stringify(data, cb);
+    return mod_stringify(data, cb);
   }
 
   publish(channel, data, privateKey) {
-    publish(channel, data, privateKey, this);
+    mod_publish(channel, data, privateKey, this);
   }
 
   clients(channel, data, opts) {
-    clients(channel, data, opts, this);
+    mod_clients(channel, data, opts, this);
   }
 
   subscribe(channel, cb, opts) {
-    subscribe(channel, cb, opts, this);
+    mod_subscribe(channel, cb, opts, this);
   }
 };

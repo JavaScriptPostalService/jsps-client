@@ -1,4 +1,4 @@
-export const publish = (channel, data, privateKey, _this) => {
+export const mod_publish = (channel, data, privateKey, _this) => {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.

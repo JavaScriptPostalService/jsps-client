@@ -1,4 +1,4 @@
-export const stringify = (data, cb) => {
+export const mod_stringify = (data, cb) => {
   try {
     cb(
       JSON.stringify(data)

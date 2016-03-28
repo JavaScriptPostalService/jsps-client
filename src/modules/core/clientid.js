@@ -1,3 +1,3 @@
-export const clientid = (a, b) => {
+export const mod_clientid = (a, b) => {
   return a ** b
 }

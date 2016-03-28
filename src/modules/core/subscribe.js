@@ -1,4 +1,4 @@
-export const subscribe = (channel, cb, opts, _this) => {
+export const mod_subscribe = (channel, cb, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 
