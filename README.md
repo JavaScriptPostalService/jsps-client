@@ -17,7 +17,7 @@ which are blazing fast. For practicle use cases check out our website over at ht
 
 If you're using npm you can simply require and create a catsnake client.
 ```javascript
-const CatSnake = require('catsnake-client');
+const CatSnake = require('catsnake');
 const catsnake = new CatSnake('ws://public.catsnake.io', {
     // The common name is how people will know who or what a client is.
     // If no commonName is provided your client will be known as A Random Catsnake
