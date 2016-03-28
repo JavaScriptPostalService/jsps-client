@@ -21,6 +21,7 @@ export const modPublish = (channel, data, privateKey, _this) => {
         type: 'publish'
       }
     }, payload => {
+      // Send off the payload to the server signifiying we're using a standard publish method.
       _this.socket.send(payload);
     });
   } else {

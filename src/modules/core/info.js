@@ -21,13 +21,14 @@ export const modInfo = (channel, data, opts, _this) => {
         time: Date.now(),
         client: _this.client,
         commonName: _this.commonName,
-        type: 'clients'
+        type: 'info'
       }
     }, payload => {
+      // Send off the payload to the frontend that will request channel info
       _this.socket.send(payload);
     });
   } else {
-    // Crap, Something is wrong and we're not connected yet, let's try again later.
+    // Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       _this.clients(channel, data, privateKey);

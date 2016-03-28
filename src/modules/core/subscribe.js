@@ -24,12 +24,17 @@ export const modSubscribe = (channel, callback, opts, _this) => {
         type: 'subscribe'
       }
     }, payload => {
+      // Send off the payload to the server letting it know we're subscribing to a channel
       _this.socket.send(payload);
+
+      // Whenever the server has new info it will tell us here.
       _this.socket.onmessage = function(msg) {
         if (JSON.parse(msg.data).channel === channel) {
           callback(JSON.parse(msg.data));
         }
       };
+
+      // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
       window.onbeforeunload = () => {
         _this.stringify({
           channel,
