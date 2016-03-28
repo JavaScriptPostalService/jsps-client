@@ -1,6 +1,6 @@
-export const modStringify = (data, cb) => {
+export const modStringify = (data, callback) => {
   try {
-    cb(
+    callback(
       JSON.stringify(data)
     );
   } catch (e) {

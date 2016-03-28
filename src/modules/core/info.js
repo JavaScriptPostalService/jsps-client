@@ -1,4 +1,4 @@
-export const modClients = (channel, data, opts, _this) => {
+export const modInfo = (channel, data, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 
@@ -25,4 +25,4 @@ export const modClients = (channel, data, opts, _this) => {
       _this.clients(channel, data, privateKey);
     }, 500);
   }
-}
+};

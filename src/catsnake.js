@@ -4,7 +4,7 @@ import {
   modClientid,
   modStringify,
   modPublish,
-  modClients,
+  modInfo,
   modSubscribe
 } from './modules/core/index';
 
@@ -67,16 +67,16 @@ class CatSnake {
     modPublish(channel, data, privateKey, this);
   }
 
-  clients(channel, data, opts) {
+  info(channel, data, opts) {
     /**
      * List all clients
-     * @function modClients
+     * @function modInfo
      * @param {string} channel - the channel to look at
      * @param {object} data - additional information for request
      * @param {object} opts - additional options for subscriptions
      * @param {this} this - this inheratance
     */
-    modClients(channel, data, opts, this);
+    modInfo(channel, data, opts, this);
   }
 
   subscribe(channel, cb, opts) {
