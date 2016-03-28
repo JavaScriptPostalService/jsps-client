@@ -1,8 +1,8 @@
 {
-  "name": "jsps-client",
+  "name": "catsnake-client",
   "version": "0.0.1",
-  "description": "JavaScript Postal Service - Free, and simple to use JavaScript messaging for building realtime applications.",
-  "main": "build/mod/jsps.js",
+  "description": "CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.",
+  "main": "build/mod/catsnake.js",
   "scripts": {
     "build": "gulp build",
     "dev": "gulp",

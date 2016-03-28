@@ -9,13 +9,13 @@ import {
 } from './modules/core/index';
 
 /**
- * Creates a new jsps client.
+ * Creates a new catsnake client.
  * @class
  */
-class jsps {
+class catsnake {
   /**
-   * @constructs jsps
-   * @param {string} address - the address of the jsps server
+   * @constructs catsnake
+   * @param {string} address - the address of the catsnake server
    * @param {object} options - options such as common name and others
    */
   constructor(address, options) {

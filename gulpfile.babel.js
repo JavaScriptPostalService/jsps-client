@@ -16,7 +16,7 @@ const insert = require('gulp-insert')
 // Configs for all tasks
 // Comments are just examples how to add posible configurations to the tasks
 const rollupConf = {
-  entry: 'src/jsps.js',
+  entry: 'src/catsnake.js',
   plugins: [
     //nodeResolve({ jsnext: true }),
     babel(),
@@ -30,13 +30,13 @@ const rollupConf = {
 const iifeBundleConf = {
   format: 'iife',
   moduleName: 'component',
-  dest: 'build/jsps.iife.js'
+  dest: 'build/catsnake.iife.js'
 }
 
 //CommonJS, suitable for Node and Browserify/Webpack format
 const cjsBundleConf = {
   format: 'cjs',
-  dest: 'build/jsps.js'
+  dest: 'build/catsnake.js'
 }
 
 //example server confin
@@ -49,7 +49,7 @@ gulp.task('server:example', () => connect.server(exampleServConf))
 gulp.task('reload-js', () => gulp.src('build/*.js').pipe(connect.reload()))
 
 gulp.task('npmify', () => {
-  gulp.src('build/jsps.js').pipe(insert.append('\nmodule.exports = jsps;\n')).pipe(gulp.dest('build/module'))
+  gulp.src('build/catsnake.js').pipe(insert.append('\nmodule.exports = catsnake;\n')).pipe(gulp.dest('build/module'))
 })
 
 
