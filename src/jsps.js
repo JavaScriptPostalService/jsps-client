@@ -1,11 +1,11 @@
 'use strict';
 
 import {
-  mod_clientid,
-  mod_stringify,
-  mod_publish,
-  mod_clients,
-  mod_subscribe
+  modClientid,
+  modStringify,
+  modPublish,
+  modClients,
+  modSubscribe
 } from './modules/core/index';
 
 class jsps {
@@ -13,33 +13,35 @@ class jsps {
     this.socket = new WebSocket(address);
     this.connected = false;
     this.client = this.clientid();
-    this.commonName = (options.commonName) ? options.commonName : 'A Random Postman.';
+    this.commonName = (options.commonName) ?
+      options.commonName : 'A Random Postman.';
 
     this.socket.onopen = event => {
       this.connected = true;
+
       window.onbeforeunload = () => {
         this.socket.close();
       };
-    }
+    };
   }
 
-  clientid() {
-    return mod_clientid();
+  static clientid() {
+    return modClientid();
   }
 
-  stringify(data, cb) {
-    return mod_stringify(data, cb);
+  static stringify(data, cb) {
+    return modStringify(data, cb);
   }
 
   publish(channel, data, privateKey) {
-    mod_publish(channel, data, privateKey, this);
+    modPublish(channel, data, privateKey, this);
   }
 
   clients(channel, data, opts) {
-    mod_clients(channel, data, opts, this);
+    modClients(channel, data, opts, this);
   }
 
   subscribe(channel, cb, opts) {
-    mod_subscribe(channel, cb, opts, this);
+    modSubscribe(channel, cb, opts, this);
   }
-};
+}

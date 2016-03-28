@@ -1,4 +1,4 @@
-export const mod_subscribe = (channel, cb, opts, _this) => {
+export const modSubscribe = (channel, cb, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 
@@ -17,7 +17,7 @@ export const mod_subscribe = (channel, cb, opts, _this) => {
       }
     }, payload => {
       _this.socket.send(payload);
-      _this.socket.onmessage = function (msg) {
+      _this.socket.onmessage = function(msg) {
         if (JSON.parse(msg.data).channel === channel) {
           cb(JSON.parse(msg.data));
         }
@@ -39,9 +39,9 @@ export const mod_subscribe = (channel, cb, opts, _this) => {
     });
   } else {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       _this.subscribe(channel, cb, privateKey);
     }, 500);
   }
-}
+};

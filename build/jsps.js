@@ -28,11 +28,11 @@ babelHelpers.createClass = function () {
 
 babelHelpers;
 
-var clientid = function clientid(a, b) {
+var modClientid = function modClientid(a, b) {
   return Math.pow(a, b);
 };
 
-var stringify = function stringify(data, cb) {
+var modStringify = function modStringify(data, cb) {
   try {
     cb(JSON.stringify(data));
   } catch (e) {
@@ -40,7 +40,7 @@ var stringify = function stringify(data, cb) {
   }
 };
 
-var publish = function publish(channel, data, privateKey, _this) {
+var modPublish = function modPublish(channel, data, privateKey, _this) {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
@@ -59,14 +59,14 @@ var publish = function publish(channel, data, privateKey, _this) {
     });
   } else {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
       _this.publish(channel, data, privateKey);
     }, 500);
   }
 };
 
-var clients = function clients(channel, data, opts, _this) {
+var modClients = function modClients(channel, data, opts, _this) {
   var options = opts ? opts : {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -88,14 +88,14 @@ var clients = function clients(channel, data, opts, _this) {
     });
   } else {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
       _this.clients(channel, data, privateKey);
     }, 500);
   }
 };
 
-var subscribe = function subscribe(channel, cb, opts, _this) {
+var modSubscribe = function modSubscribe(channel, cb, opts, _this) {
   var options = opts ? opts : {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -105,6 +105,7 @@ var subscribe = function subscribe(channel, cb, opts, _this) {
       channel: channel,
       privateKey: privateKey,
       noself: options.noself ? options.noself : false,
+      silent: options.silent ? options.silent : false,
       metadata: {
         time: Date.now(),
         client: _this.client,
@@ -135,7 +136,7 @@ var subscribe = function subscribe(channel, cb, opts, _this) {
     });
   } else {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
       _this.subscribe(channel, cb, privateKey);
     }, 500);
@@ -151,9 +152,11 @@ var jsps = function () {
     this.socket = new WebSocket(address);
     this.connected = false;
     this.client = this.clientid();
-    this.commonName = options.commonName ? options.commonName : 'Anonymous';
+    this.commonName = options.commonName ? options.commonName : 'A Random Postman.';
+
     this.socket.onopen = function (event) {
       _this.connected = true;
+
       window.onbeforeunload = function () {
         _this.socket.close();
       };
@@ -161,32 +164,30 @@ var jsps = function () {
   }
 
   babelHelpers.createClass(jsps, [{
-    key: 'clientid',
-    value: function clientid$$() {
-      return clientid();
-    }
-  }, {
-    key: 'stringify',
-    value: function stringify$$(data, cb) {
-      return stringify(data, cb);
-    }
-  }, {
     key: 'publish',
-    value: function publish$$(channel, data, privateKey) {
-      publish(channel, data, privateKey, this);
+    value: function publish(channel, data, privateKey) {
+      modPublish(channel, data, privateKey, this);
     }
   }, {
     key: 'clients',
-    value: function clients$$(channel, data, opts) {
-      clients(channel, data, opts, this);
+    value: function clients(channel, data, opts) {
+      modClients(channel, data, opts, this);
     }
   }, {
     key: 'subscribe',
-    value: function subscribe$$(channel, cb, opts) {
-      subscribe(channel, cb, opts, this);
+    value: function subscribe(channel, cb, opts) {
+      modSubscribe(channel, cb, opts, this);
+    }
+  }], [{
+    key: 'clientid',
+    value: function clientid() {
+      return modClientid();
+    }
+  }, {
+    key: 'stringify',
+    value: function stringify(data, cb) {
+      return modStringify(data, cb);
     }
   }]);
   return jsps;
 }();
-
-;

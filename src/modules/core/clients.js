@@ -1,4 +1,4 @@
-export const mod_clients = (channel, data, opts, _this) => {
+export const modClients = (channel, data, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 
@@ -20,7 +20,7 @@ export const mod_clients = (channel, data, opts, _this) => {
     });
   } else {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       _this.clients(channel, data, privateKey);
     }, 500);

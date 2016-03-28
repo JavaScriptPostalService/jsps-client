@@ -1,4 +1,4 @@
-export const mod_publish = (channel, data, privateKey, _this) => {
+export const modPublish = (channel, data, privateKey, _this) => {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
@@ -17,9 +17,9 @@ export const mod_publish = (channel, data, privateKey, _this) => {
     });
   } else {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to publish, not connected to server, attempting again in 1 second.');
+    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       _this.publish(channel, data, privateKey);
     }, 500);
   }
-}
+};
