@@ -11,17 +11,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wski/freesub-client.git"
+    "url": "https://github.com/wski/catsnake-client.git"
   },
   "authors": [
     "wski <contact.mattdylan@gmail.com>",
     "hoganmaps <chris@hogan.io>"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wski/freesub-client/issues"
+    "url": "https://github.com/wski/catsnake-client/issues"
   },
-  "homepage": "https://github.com/wski/freesub-client",
+  "homepage": "https://github.com/wski/catsnake-client",
   "devDependencies": {
     "babel-core": "^6.6.5",
     "babel-preset-es2015": "^6.6.0",

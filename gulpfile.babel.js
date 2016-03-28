@@ -49,7 +49,7 @@ gulp.task('server:example', () => connect.server(exampleServConf))
 gulp.task('reload-js', () => gulp.src('build/*.js').pipe(connect.reload()))
 
 gulp.task('npmify', () => {
-  gulp.src('build/catsnake.js').pipe(insert.append('\nmodule.exports = catsnake;\n')).pipe(gulp.dest('build/module'))
+  gulp.src('build/catsnake.js').pipe(insert.append('\nmodule.exports = CatSnake;\n')).pipe(gulp.dest('build/module'))
 })
 
 

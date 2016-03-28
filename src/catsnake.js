@@ -9,12 +9,12 @@ import {
 } from './modules/core/index';
 
 /**
- * Creates a new catsnake client.
+ * Creates a new CatSnake client.
  * @class
  */
-class catsnake {
+class CatSnake {
   /**
-   * @constructs catsnake
+   * @constructs CatSnake
    * @param {string} address - the address of the catsnake server
    * @param {object} options - options such as common name and others
    */
