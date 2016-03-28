@@ -143,7 +143,18 @@ var modSubscribe = function modSubscribe(channel, cb, opts, _this) {
   }
 };
 
+/**
+ * Creates a new jsps client.
+ * @class
+ */
+
 var jsps = function () {
+  /**
+   * @constructs jsps
+   * @param {string} address - the address of the jsps server
+   * @param {object} options - options such as common name and others
+   */
+
   function jsps(address, options) {
     var _this = this;
 
@@ -166,26 +177,61 @@ var jsps = function () {
   babelHelpers.createClass(jsps, [{
     key: 'publish',
     value: function publish(channel, data, privateKey) {
+      /**
+       * Publishes a message to all subscribers
+       * @function modPublish
+       * @param {string} channel - the channel to publish to
+       * @param {object} data - the object to publish
+       * @param {string} privateKey - optional private key for private channels
+       * @param {this} this - this inheratance
+      */
       modPublish(channel, data, privateKey, this);
     }
   }, {
     key: 'clients',
     value: function clients(channel, data, opts) {
+      /**
+       * List all clients
+       * @function modClients
+       * @param {string} channel - the channel to look at
+       * @param {object} data - additional information for request
+       * @param {object} opts - additional options for subscriptions
+       * @param {this} this - this inheratance
+      */
       modClients(channel, data, opts, this);
     }
   }, {
     key: 'subscribe',
     value: function subscribe(channel, cb, opts) {
+      /**
+       * Subscribe to a channel
+       * @function modSubscribe
+       * @param {string} channel - the channel to subscribe to
+       * @callback {function} cb - new messages are returned here via msg
+       * @param {object} opts - additional options for subscriptions
+       * @param {this} this - this inheratance
+      */
       modSubscribe(channel, cb, opts, this);
     }
   }], [{
     key: 'clientid',
     value: function clientid() {
+      /**
+       * Returns a new random, unique clientid
+       * @function modClientid
+       * @return {string} - Returns a new random, unique clientid
+      */
       return modClientid();
     }
   }, {
     key: 'stringify',
     value: function stringify(data, cb) {
+      /**
+       * Tries to return a stringified object.
+       * @function modStringify
+       * @param {object} data - the object to attempt to stringify
+       * @callback {string} - Returns a stringified object
+      */
       return modStringify(data, cb);
     }
   }]);
