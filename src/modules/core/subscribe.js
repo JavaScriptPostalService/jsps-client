@@ -1,12 +1,12 @@
 /**
- * modSubscribe module.
- * @module core/modSubscribe
+ * csModSubscribe module.
+ * @module core/csModSubscribe
  * @param {string} channel - the channel to subscribe to
  * @callback {function} callback - new messages are returned here via msg
  * @param {object} opts - additional options for subscriptions
  * @param {this} _this - this inheratance
 */
-export const modSubscribe = (channel, callback, opts, _this) => {
+export const csModSubscribe = (channel, callback, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 

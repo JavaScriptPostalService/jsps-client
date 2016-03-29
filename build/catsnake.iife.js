@@ -30,19 +30,11 @@
   babelHelpers;
 
   /**
-   * config module.
-   * @module core/config
-   */
-  var config = {
-    defaultName: 'A random catsnake'
-  };
-
-  /**
-   * modClientid module.
-   * @module core/modClientid
+   * csModClientid module.
+   * @module core/csModClientid
    * @return {string} - Returns a new random, unique clientid
    */
-  var modClientid = function modClientid() {
+  var csModClientid = function csModClientid() {
     var d = new Date().getTime();
     var uuid = 'client-xxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (d + Math.random() * 16) % 16 | 0;
@@ -53,12 +45,12 @@
   };
 
   /**
-   * modStringify module.
-   * @module core/modStringify
+   * csModStringify module.
+   * @module core/csModStringify
    * @param {object} data - the object to attempt to stringify
    * @callback {function} callback - Returns a stringified object
   */
-  var modStringify = function modStringify(data, callback) {
+  var csModStringify = function csModStringify(data, callback) {
     try {
       callback(JSON.stringify(data));
     } catch (e) {
@@ -67,14 +59,14 @@
   };
 
   /**
-   * modPublish module.
-   * @module core/modPublish
+   * csModPublish module.
+   * @module core/csModPublish
    * @param {string} channel - the channel to publish to
    * @param {object} data - the object to publish
    * @param {string} privateKey - optional private key for private channels
    * @param {this} _this - this inheratance
   */
-  var modPublish = function modPublish(channel, data, privateKey, _this) {
+  var csModPublish = function csModPublish(channel, data, privateKey, _this) {
     // If we're connected, let's go ahead and publish our payload.
     if (_this.connected) {
       // Safely stringify our data before sending it to the server.
@@ -102,14 +94,14 @@
   };
 
   /**
-   * modInfo module.
-   * @module core/modInfo
+   * csModInfo module.
+   * @module core/csModInfo
    * @param {string} channel - the channel to look at
    * @param {object} data - additional information for request
    * @param {object} opts - additional options for subscriptions
    * @param {this} _this - this inheratance
   */
-  var modInfo = function modInfo(channel, data, opts, _this) {
+  var csModInfo = function csModInfo(channel, data, opts, _this) {
     var options = opts ? opts : {};
     var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -140,14 +132,14 @@
   };
 
   /**
-   * modSubscribe module.
-   * @module core/modSubscribe
+   * csModSubscribe module.
+   * @module core/csModSubscribe
    * @param {string} channel - the channel to subscribe to
    * @callback {function} callback - new messages are returned here via msg
    * @param {object} opts - additional options for subscriptions
    * @param {this} _this - this inheratance
   */
-  var modSubscribe = function modSubscribe(channel, callback, opts, _this) {
+  var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
     var options = opts ? opts : {};
     var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -201,15 +193,15 @@
   };
 
   /**
-   * modHistory module.
-   * @module core/modHistory
+   * csModHistory module.
+   * @module core/csModHistory
    * @param {string} channel - the channel to pull history from
    * @param {number} limit - the ammount of items to pull from history
    * @param {function} callback - history will be returned here
    * @param {object} opts - options such as privateKeys
    * @param {this} _this - this inheratance
   */
-  var modHistory = function modHistory(channel, limit, opts, _this) {
+  var csModHistory = function csModHistory(channel, limit, opts, _this) {
     var options = opts ? opts : {};
     var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -260,7 +252,7 @@
       this.connected = false;
 
       // Genrate a unique clientid
-      this.client = modClientid();
+      this.client = csModClientid();
 
       this.commonName = options.commonName ? options.commonName : config.defaultName;
 
@@ -280,63 +272,63 @@
       value: function publish(channel, data, privateKey) {
         /**
          * Publishes a message to all subscribers
-         * @function modPublish
+         * @function csModPublish
          * @param {string} channel - the channel to publish to
          * @param {object} data - the object to publish
          * @param {string} privateKey - optional private key for private channels
          * @param {this} this - this inheratance
         */
-        modPublish(channel, data, privateKey, this);
+        csModPublish(channel, data, privateKey, this);
       }
     }, {
       key: 'info',
       value: function info(channel, data, opts) {
         /**
          * List all clients
-         * @function modInfo
+         * @function csModInfo
          * @param {string} channel - the channel to look at
          * @param {object} data - additional information for request
          * @param {object} opts - additional options for subscriptions
          * @param {this} this - this inheratance
         */
-        modInfo(channel, data, opts, this);
+        csModInfo(channel, data, opts, this);
       }
     }, {
       key: 'history',
       value: function history(channel, limit, opts) {
         /**
          * List all clients
-         * @function modHistory
+         * @function csModHistory
          * @param {string} channel - the channel to pull history from
          * @param {number} limit - the ammount of items to pull from history
          * @param {object} opts - options such as privateKeys
          * @param {this} this - this inheratance
         */
-        modHistory(channel, limit, opts, this);
+        csModHistory(channel, limit, opts, this);
       }
     }, {
       key: 'subscribe',
       value: function subscribe(channel, callback, opts) {
         /**
          * Subscribe to a channel
-         * @function modSubscribe
+         * @function csModSubscribe
          * @param {string} channel - the channel to subscribe to
          * @callback {function} callback - new messages are returned here via msg
          * @param {object} opts - additional options for subscriptions
          * @param {this} this - this inheratance
         */
-        modSubscribe(channel, callback, opts, this);
+        csModSubscribe(channel, callback, opts, this);
       }
     }], [{
       key: 'stringify',
       value: function stringify(data, callback) {
         /**
          * Tries to return a stringified object.
-         * @function modStringify
+         * @function csModStringify
          * @param {object} data - the object to attempt to stringify
          * @callback {string} - Returns a stringified object
         */
-        return modStringify(data, callback);
+        return csModStringify(data, callback);
       }
     }]);
     return CatSnake;

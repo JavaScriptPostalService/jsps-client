@@ -1,10 +1,10 @@
 /**
- * modStringify module.
- * @module core/modStringify
+ * csModStringify module.
+ * @module core/csModStringify
  * @param {object} data - the object to attempt to stringify
  * @callback {function} callback - Returns a stringified object
 */
-export const modStringify = (data, callback) => {
+export const csModStringify = (data, callback) => {
   try {
     callback(
       JSON.stringify(data)

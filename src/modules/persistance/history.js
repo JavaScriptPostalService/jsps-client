@@ -1,13 +1,13 @@
 /**
- * modHistory module.
- * @module core/modHistory
+ * csModHistory module.
+ * @module core/csModHistory
  * @param {string} channel - the channel to pull history from
  * @param {number} limit - the ammount of items to pull from history
  * @param {function} callback - history will be returned here
  * @param {object} opts - options such as privateKeys
  * @param {this} _this - this inheratance
 */
-export const modHistory = (channel, limit, opts, _this) => {
+export const csModHistory = (channel, limit, opts, _this) => {
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 

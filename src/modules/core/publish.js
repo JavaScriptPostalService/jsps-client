@@ -1,12 +1,12 @@
 /**
- * modPublish module.
- * @module core/modPublish
+ * csModPublish module.
+ * @module core/csModPublish
  * @param {string} channel - the channel to publish to
  * @param {object} data - the object to publish
  * @param {string} privateKey - optional private key for private channels
  * @param {this} _this - this inheratance
 */
-export const modPublish = (channel, data, privateKey, _this) => {
+export const csModPublish = (channel, data, privateKey, _this) => {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
