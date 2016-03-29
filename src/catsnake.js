@@ -1,5 +1,7 @@
 'use strict';
 
+import {config} from './config';
+
 import {
   modClientid,
   modStringify,
@@ -25,9 +27,12 @@ class CatSnake {
   constructor(address, options) {
     this.socket = new WebSocket(address);
     this.connected = false;
+
+    // Genrate a unique clientid
     this.client = modClientid();
+
     this.commonName = (options.commonName) ?
-      options.commonName : 'A Random Postman.';
+      options.commonName : config.defaultName;
 
     // Fired when the connection is made to the server
     this.socket.onopen = event => {
@@ -40,7 +45,7 @@ class CatSnake {
     };
   }
 
-  stringify(data, callback) {
+  static stringify(data, callback) {
     /**
      * Tries to return a stringified object.
      * @function modStringify

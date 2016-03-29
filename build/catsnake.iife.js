@@ -30,6 +30,14 @@
   babelHelpers;
 
   /**
+   * config module.
+   * @module core/config
+   */
+  var config = {
+    defaultName: 'A random catsnake'
+  };
+
+  /**
    * modClientid module.
    * @module core/modClientid
    * @return {string} - Returns a new random, unique clientid
@@ -250,8 +258,11 @@
 
       this.socket = new WebSocket(address);
       this.connected = false;
+
+      // Genrate a unique clientid
       this.client = modClientid();
-      this.commonName = options.commonName ? options.commonName : 'A Random Postman.';
+
+      this.commonName = options.commonName ? options.commonName : config.defaultName;
 
       // Fired when the connection is made to the server
       this.socket.onopen = function (event) {
@@ -265,17 +276,6 @@
     }
 
     babelHelpers.createClass(CatSnake, [{
-      key: 'stringify',
-      value: function stringify(data, callback) {
-        /**
-         * Tries to return a stringified object.
-         * @function modStringify
-         * @param {object} data - the object to attempt to stringify
-         * @callback {string} - Returns a stringified object
-        */
-        return modStringify(data, callback);
-      }
-    }, {
       key: 'publish',
       value: function publish(channel, data, privateKey) {
         /**
@@ -326,6 +326,17 @@
          * @param {this} this - this inheratance
         */
         modSubscribe(channel, callback, opts, this);
+      }
+    }], [{
+      key: 'stringify',
+      value: function stringify(data, callback) {
+        /**
+         * Tries to return a stringified object.
+         * @function modStringify
+         * @param {object} data - the object to attempt to stringify
+         * @callback {string} - Returns a stringified object
+        */
+        return modStringify(data, callback);
       }
     }]);
     return CatSnake;
