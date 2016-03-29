@@ -28,18 +28,43 @@ babelHelpers.createClass = function () {
 
 babelHelpers;
 
-var modClientid = function modClientid(a, b) {
-  return Math.pow(a, b);
+/**
+ * modClientid module.
+ * @module core/modClientid
+ * @return {string} - Returns a new random, unique clientid
+ */
+var modClientid = function modClientid() {
+  var d = new Date().getTime();
+  var uuid = 'client-xxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === 'x' ? r : r & 0x3 | 0x8).toString(16);
+  });
+  return uuid;
 };
 
-var modStringify = function modStringify(data, cb) {
+/**
+ * modStringify module.
+ * @module core/modStringify
+ * @param {object} data - the object to attempt to stringify
+ * @callback {function} callback - Returns a stringified object
+*/
+var modStringify = function modStringify(data, callback) {
   try {
-    cb(JSON.stringify(data));
+    callback(JSON.stringify(data));
   } catch (e) {
     console.warn('attempted to send invalid data to the pubsub server.');
   }
 };
 
+/**
+ * modPublish module.
+ * @module core/modPublish
+ * @param {string} channel - the channel to publish to
+ * @param {object} data - the object to publish
+ * @param {string} privateKey - optional private key for private channels
+ * @param {this} _this - this inheratance
+*/
 var modPublish = function modPublish(channel, data, privateKey, _this) {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
@@ -55,6 +80,7 @@ var modPublish = function modPublish(channel, data, privateKey, _this) {
         type: 'publish'
       }
     }, function (payload) {
+      // Send off the payload to the server signifiying we're using a standard publish method.
       _this.socket.send(payload);
     });
   } else {
@@ -66,7 +92,15 @@ var modPublish = function modPublish(channel, data, privateKey, _this) {
   }
 };
 
-var modClients = function modClients(channel, data, opts, _this) {
+/**
+ * modInfo module.
+ * @module core/modInfo
+ * @param {string} channel - the channel to look at
+ * @param {object} data - additional information for request
+ * @param {object} opts - additional options for subscriptions
+ * @param {this} _this - this inheratance
+*/
+var modInfo = function modInfo(channel, data, opts, _this) {
   var options = opts ? opts : {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -81,21 +115,30 @@ var modClients = function modClients(channel, data, opts, _this) {
         time: Date.now(),
         client: _this.client,
         commonName: _this.commonName,
-        type: 'clients'
+        type: 'info'
       }
     }, function (payload) {
+      // Send off the payload to the frontend that will request channel info
       _this.socket.send(payload);
     });
   } else {
-    // Crap, Something is wrong and we're not connected yet, let's try again later.
+    // Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
-      _this.clients(channel, data, privateKey);
+      _this.info(channel, data, opts);
     }, 500);
   }
 };
 
-var modSubscribe = function modSubscribe(channel, cb, opts, _this) {
+/**
+ * modSubscribe module.
+ * @module core/modSubscribe
+ * @param {string} channel - the channel to subscribe to
+ * @callback {function} callback - new messages are returned here via msg
+ * @param {object} opts - additional options for subscriptions
+ * @param {this} _this - this inheratance
+*/
+var modSubscribe = function modSubscribe(channel, callback, opts, _this) {
   var options = opts ? opts : {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -113,12 +156,17 @@ var modSubscribe = function modSubscribe(channel, cb, opts, _this) {
         type: 'subscribe'
       }
     }, function (payload) {
+      // Send off the payload to the server letting it know we're subscribing to a channel
       _this.socket.send(payload);
+
+      // Whenever the server has new info it will tell us here.
       _this.socket.onmessage = function (msg) {
         if (JSON.parse(msg.data).channel === channel) {
-          cb(JSON.parse(msg.data));
+          callback(JSON.parse(msg.data));
         }
       };
+
+      // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
       window.onbeforeunload = function () {
         _this.stringify({
           channel: channel,
@@ -138,31 +186,70 @@ var modSubscribe = function modSubscribe(channel, cb, opts, _this) {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
-      _this.subscribe(channel, cb, privateKey);
+      _this.subscribe(channel, callback, privateKey);
     }, 500);
   }
 };
 
 /**
- * Creates a new jsps client.
+ * modHistory module.
+ * @module core/modHistory
+ * @param {string} channel - the channel to pull history from
+ * @param {number} limit - the ammount of items to pull from history
+ * @param {function} callback - history will be returned here
+ * @param {object} opts - options such as privateKeys
+ * @param {this} _this - this inheratance
+*/
+var modHistory = function modHistory(channel, limit, opts, _this) {
+  var options = opts ? opts : {};
+  var privateKey = options.privateKey ? options.privateKey : false;
+
+  // If we're connected, let's go ahead and publish our payload.
+  if (_this.connected) {
+    // Safely stringify our data before sending it to the server.
+    _this.stringify({
+      channel: channel,
+      privateKey: privateKey,
+      limit: limit,
+      metadata: {
+        time: Date.now(),
+        client: _this.client,
+        commonName: _this.commonName,
+        type: 'history'
+      }
+    }, function (payload) {
+      // Send off the payload to the frontend that will request a batch of history
+      _this.socket.send(payload);
+    });
+  } else {
+    // Something is wrong and we're not connected yet, let's try again later.
+    console.warn('Failed to connect, attempting again in 1 second.');
+    setTimeout(function () {
+      _this.history(channel, limit, opts);
+    }, 500);
+  }
+};
+
+/**
+ * Creates a new CatSnake client.
  * @class
  */
 
-var jsps = function () {
+var CatSnake = function () {
   /**
-   * @constructs jsps
-   * @param {string} address - the address of the jsps server
+   * @constructs CatSnake
+   * @param {string} address - the address of the catsnake server
    * @param {object} options - options such as common name and others
    */
 
-  function jsps(address, options) {
+  function CatSnake(address, options) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, jsps);
+    babelHelpers.classCallCheck(this, CatSnake);
 
     this.socket = new WebSocket(address);
     this.connected = false;
-    this.client = this.clientid();
+    this.client = modClientid();
     this.commonName = options.commonName ? options.commonName : 'A Random Postman.';
 
     // Fired when the connection is made to the server
@@ -176,7 +263,18 @@ var jsps = function () {
     };
   }
 
-  babelHelpers.createClass(jsps, [{
+  babelHelpers.createClass(CatSnake, [{
+    key: 'stringify',
+    value: function stringify(data, callback) {
+      /**
+       * Tries to return a stringified object.
+       * @function modStringify
+       * @param {object} data - the object to attempt to stringify
+       * @callback {string} - Returns a stringified object
+      */
+      return modStringify(data, callback);
+    }
+  }, {
     key: 'publish',
     value: function publish(channel, data, privateKey) {
       /**
@@ -190,52 +288,45 @@ var jsps = function () {
       modPublish(channel, data, privateKey, this);
     }
   }, {
-    key: 'clients',
-    value: function clients(channel, data, opts) {
+    key: 'info',
+    value: function info(channel, data, opts) {
       /**
        * List all clients
-       * @function modClients
+       * @function modInfo
        * @param {string} channel - the channel to look at
        * @param {object} data - additional information for request
        * @param {object} opts - additional options for subscriptions
        * @param {this} this - this inheratance
       */
-      modClients(channel, data, opts, this);
+      modInfo(channel, data, opts, this);
+    }
+  }, {
+    key: 'history',
+    value: function history(channel, limit, opts) {
+      /**
+       * List all clients
+       * @function modHistory
+       * @param {string} channel - the channel to pull history from
+       * @param {number} limit - the ammount of items to pull from history
+       * @param {object} opts - options such as privateKeys
+       * @param {this} this - this inheratance
+      */
+      modHistory(channel, limit, opts, this);
     }
   }, {
     key: 'subscribe',
-    value: function subscribe(channel, cb, opts) {
+    value: function subscribe(channel, callback, opts) {
       /**
        * Subscribe to a channel
        * @function modSubscribe
        * @param {string} channel - the channel to subscribe to
-       * @callback {function} cb - new messages are returned here via msg
+       * @callback {function} callback - new messages are returned here via msg
        * @param {object} opts - additional options for subscriptions
        * @param {this} this - this inheratance
       */
-      modSubscribe(channel, cb, opts, this);
-    }
-  }], [{
-    key: 'clientid',
-    value: function clientid() {
-      /**
-       * Returns a new random, unique clientid
-       * @function modClientid
-       * @return {string} - Returns a new random, unique clientid
-      */
-      return modClientid();
-    }
-  }, {
-    key: 'stringify',
-    value: function stringify(data, cb) {
-      /**
-       * Tries to return a stringified object.
-       * @function modStringify
-       * @param {object} data - the object to attempt to stringify
-       * @callback {string} - Returns a stringified object
-      */
-      return modStringify(data, cb);
+      modSubscribe(channel, callback, opts, this);
     }
   }]);
-  return jsps;
+  return CatSnake;
 }();
+module.exports = CatSnake;

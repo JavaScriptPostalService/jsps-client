@@ -8,6 +8,10 @@ import {
   modSubscribe
 } from './modules/core/index';
 
+import {
+  modHistory
+} from './modules/persistance/index';
+
 /**
  * Creates a new CatSnake client.
  * @class
@@ -21,7 +25,7 @@ class CatSnake {
   constructor(address, options) {
     this.socket = new WebSocket(address);
     this.connected = false;
-    this.client = this.clientid();
+    this.client = modClientid();
     this.commonName = (options.commonName) ?
       options.commonName : 'A Random Postman.';
 
@@ -36,16 +40,7 @@ class CatSnake {
     };
   }
 
-  static clientid() {
-    /**
-     * Returns a new random, unique clientid
-     * @function modClientid
-     * @return {string} - Returns a new random, unique clientid
-    */
-    return modClientid();
-  }
-
-  static stringify(data, callback) {
+  stringify(data, callback) {
     /**
      * Tries to return a stringified object.
      * @function modStringify
@@ -77,6 +72,18 @@ class CatSnake {
      * @param {this} this - this inheratance
     */
     modInfo(channel, data, opts, this);
+  }
+
+  history(channel, limit, opts) {
+    /**
+     * List all clients
+     * @function modHistory
+     * @param {string} channel - the channel to pull history from
+     * @param {number} limit - the ammount of items to pull from history
+     * @param {object} opts - options such as privateKeys
+     * @param {this} this - this inheratance
+    */
+    modHistory(channel, limit, opts, this);
   }
 
   subscribe(channel, callback, opts) {

@@ -31,7 +31,7 @@ export const modInfo = (channel, data, opts, _this) => {
     // Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
-      _this.clients(channel, data, privateKey);
+      _this.info(channel, data, opts);
     }, 500);
   }
 };
