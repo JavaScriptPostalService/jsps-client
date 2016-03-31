@@ -91,3 +91,13 @@ features below.
 ```javascript
 CatSnake.unsubscribe('General');
 ```
+
+### History
+
+Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
+History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'
+```javascript
+CatSnake.info('General', limit, {
+  privateKey: 'ShhThisIsAPrivateChannel' // Optional
+});
+```

@@ -267,6 +267,17 @@ var CatSnake = function () {
   }
 
   babelHelpers.createClass(CatSnake, [{
+    key: 'stringify',
+    value: function stringify(data, callback) {
+      /**
+       * Tries to return a stringified object.
+       * @function csModStringify
+       * @param {object} data - the object to attempt to stringify
+       * @callback {string} - Returns a stringified object
+      */
+      return csModStringify(data, callback);
+    }
+  }, {
     key: 'publish',
     value: function publish(channel, data, privateKey) {
       /**
@@ -317,17 +328,6 @@ var CatSnake = function () {
        * @param {this} this - this inheratance
       */
       csModSubscribe(channel, callback, opts, this);
-    }
-  }], [{
-    key: 'stringify',
-    value: function stringify(data, callback) {
-      /**
-       * Tries to return a stringified object.
-       * @function csModStringify
-       * @param {object} data - the object to attempt to stringify
-       * @callback {string} - Returns a stringified object
-      */
-      return csModStringify(data, callback);
     }
   }]);
   return CatSnake;

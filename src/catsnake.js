@@ -12,6 +12,7 @@ import {
 import {
   csModHistory
 } from './modules/persistance/index';
+
 /**
  * Creates a new CatSnake client.
  * @class
@@ -43,7 +44,7 @@ class CatSnake {
     };
   }
 
-  static stringify(data, callback) {
+  stringify(data, callback) {
     /**
      * Tries to return a stringified object.
      * @function csModStringify
