@@ -20,6 +20,7 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
       privateKey,
       noself: (options.noself) ? options.noself : false,
       silent: (options.silent) ? options.silent : false,
+      secret: (options.accessToken) ? options.accessToken : false,
       metadata: {
         time: Date.now(),
         client: _this.client,

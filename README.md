@@ -41,19 +41,17 @@ const catsnake = new CatSnake('ws://public.catsnake.io', {
 Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.
 
 ```javascript
-CatSnake.subscribe('General', msg => {
-    // All messages published to this channel come through here.
-    console.log(`We got a new message! ${msg}`);
-});
-```
-
-If you're passing around some private information you can make your channel private by simply passing in a privateKey.
-Anyone who want's to later publish to this channel will need this key to do so!
-```javascript
 Postbox.subscribe('General', msg => {
     // All messages published to this channel come through here.
     console.log(`We got a new message! ${msg}`);
-}, 'ShhThisIsAPrivateChannel');
+}, {
+    // If you're passing around some private information you can make your channel private by simply passing in a privateKey.
+    // Anyone who want's to later publish to this channel will need this key to do so!
+    privateKey: 'ShhThisIsAPrivateChannel',
+    // If you would like to be able to block clients in the future, or promote
+    // other clients to be able to manage blocked users etc, add a secret.
+    secret: 'MySuperSecretKey'
+});
 
 ```
 
