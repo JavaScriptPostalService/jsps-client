@@ -4,6 +4,9 @@
  * @param {object} data - the object to attempt to stringify
  * @callback {function} callback - Returns a stringified object
 */
+
+// A dead simple try catch for stringifying objects. In the future we'd like this
+// to somehow minify the string and make for a smaller payload
 export const csModStringify = (data, callback) => {
   try {
     callback(

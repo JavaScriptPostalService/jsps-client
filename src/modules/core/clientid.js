@@ -3,6 +3,11 @@
  * @module core/csModClientid
  * @return {string} - Returns a new random, unique clientid
  */
+
+// This function simply generates a random time based client token.
+// Clients will use this token to authenticate themselves, so this should be
+// saved in the application if you plan to resubscribe to channels after reloading
+// the catsnake client
 export const csModClientid = () => {
   let d = new Date().getTime();
   let uuid = 'client-xxxxxxxx'.replace(/[xy]/g, c => {

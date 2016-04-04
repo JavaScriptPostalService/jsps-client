@@ -28,6 +28,7 @@ export const csModPublish = (channel, data, privateKey, _this) => {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
+      // call self with the same params that were initially passed.
       _this.publish(channel, data, privateKey);
     }, 500);
   }

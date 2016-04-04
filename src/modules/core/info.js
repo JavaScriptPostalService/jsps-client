@@ -7,6 +7,9 @@
  * @param {this} _this - this inheratance
 */
 export const csModInfo = (channel, data, opts, _this) => {
+  // Since options are optional, if there are no options passed, we'll drop in
+  // an empty object if options are false or undefined. This will help fix top
+  // level null or undefined exceptions.
   let options = (opts) ? opts : {};
   let privateKey = (options.privateKey) ? options.privateKey : false;
 
@@ -31,6 +34,7 @@ export const csModInfo = (channel, data, opts, _this) => {
     // Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
+      // call self with the same params that were initially passed.
       _this.info(channel, data, opts);
     }, 500);
   }
