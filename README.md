@@ -82,7 +82,6 @@ CatSnake.publish('General', msg => {
 
 
 ### Access Control
-Access control is not active yet.
 
 Catsnake gives you multiple options for access control to a channel. We'll talk
 about denying access to a channel as well as granting access.
