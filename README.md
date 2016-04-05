@@ -41,25 +41,26 @@ const catsnake = new CatSnake('ws://public.catsnake.io', {
 Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.
 
 ```javascript
-CatSnake.subscribe('General', msg => {
-    // All messages published to this channel come through here.
-    console.log(`We got a new message! ${msg}`);
-}, {
-    // If you're passing around some private information you can make your channel private by simply passing in a privateKey.
-    // Anyone who want's to later publish to this channel will need this key to do so!
-    privateKey: 'ShhThisIsAPrivateChannel',
-    // If you would like to be able to block clients in the future, or promote
-    // other clients to be able to manage blocked users etc, add a secret.
-    secret: 'MySuperSecretKey',
-    // If you want the channel to be invite only, pass in private as true, this
-    // is different from the privateKey, with the private key all you need to do
-    // is pass the privateKey to an authorized user to grant them pubsub access
-    // with private you need to grant them access manually by clientID, which
-    // they will need to send to your client before trusting, this is not
-    // publicly avalible and creates a handshake.
-    private: false
-});
+CatSnake.subscribe('General', msg => console.log(msg));
+```
 
+There are ofcourse additional options avalible.
+```javascript
+CatSnake.subscribe('General', msg => console.log(msg), {
+   // If you're passing around some private information you can make your channel private by simply passing in a privateKey.
+   // Anyone who want's to later publish to this channel will need this key to do so!
+   privateKey: 'ShhThisIsAPrivateChannel',
+   // If you would like to be able to block clients in the future, or promote
+   // other clients to be able to manage blocked users etc, add a secret.
+   secret: 'MySuperSecretKey',
+   // If you want the channel to be invite only, pass in private as true, this
+   // is different from the privateKey, with the private key all you need to do
+   // is pass the privateKey to an authorized user to grant them pubsub access
+   // with private you need to grant them access manually by clientID, which
+   // they will need to send to your client before trusting, this is not
+   // publicly avalible and creates a handshake.
+   private: false
+}
 ```
 
 ### Publish
