@@ -11,6 +11,7 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
   let options = (opts) ? opts : {};
+
   let privateKey = (options.privateKey) ? options.privateKey : false;
 
   if (_this.connected) {
@@ -19,8 +20,8 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
       channel,
       privateKey,
       noself: (options.noself) ? options.noself : false,
-      silent: (options.silent) ? options.silent : false,
       secret: (options.accessToken) ? options.accessToken : false,
+      private: (options.private) ? options.private : false,
       metadata: {
         time: Date.now(),
         client: _this.client,
@@ -28,6 +29,7 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
         type: 'subscribe'
       }
     }, payload => {
+      console.log('payload', payload);
       // Send off the payload to the server letting it know we're subscribing to a channel
       _this.socket.send(payload);
 
@@ -59,7 +61,7 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       // call self with the same params that were initially passed.
-      _this.subscribe(channel, callback, privateKey);
+      _this.subscribe(channel, callback, opts);
     }, 500);
   }
 };

@@ -33,6 +33,11 @@ babelHelpers;
  * @module core/csModClientid
  * @return {string} - Returns a new random, unique clientid
  */
+
+// This function simply generates a random time based client token.
+// Clients will use this token to authenticate themselves, so this should be
+// saved in the application if you plan to resubscribe to channels after reloading
+// the catsnake client
 var csModClientid = function csModClientid() {
   var d = new Date().getTime();
   var uuid = 'client-xxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -49,6 +54,9 @@ var csModClientid = function csModClientid() {
  * @param {object} data - the object to attempt to stringify
  * @callback {function} callback - Returns a stringified object
 */
+
+// A dead simple try catch for stringifying objects. In the future we'd like this
+// to somehow minify the string and make for a smaller payload
 var csModStringify = function csModStringify(data, callback) {
   try {
     callback(JSON.stringify(data));
@@ -87,6 +95,7 @@ var csModPublish = function csModPublish(channel, data, privateKey, _this) {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
+      // call self with the same params that were initially passed.
       _this.publish(channel, data, privateKey);
     }, 500);
   }
@@ -101,6 +110,9 @@ var csModPublish = function csModPublish(channel, data, privateKey, _this) {
  * @param {this} _this - this inheratance
 */
 var csModInfo = function csModInfo(channel, data, opts, _this) {
+  // Since options are optional, if there are no options passed, we'll drop in
+  // an empty object if options are false or undefined. This will help fix top
+  // level null or undefined exceptions.
   var options = opts ? opts : {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -125,6 +137,7 @@ var csModInfo = function csModInfo(channel, data, opts, _this) {
     // Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
+      // call self with the same params that were initially passed.
       _this.info(channel, data, opts);
     }, 500);
   }
@@ -139,7 +152,11 @@ var csModInfo = function csModInfo(channel, data, opts, _this) {
  * @param {this} _this - this inheratance
 */
 var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
+  // Since options are optional, if there are no options passed, we'll drop in
+  // an empty object if options are false or undefined. This will help fix top
+  // level null or undefined exceptions.
   var options = opts ? opts : {};
+
   var privateKey = options.privateKey ? options.privateKey : false;
 
   if (_this.connected) {
@@ -148,7 +165,8 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
       channel: channel,
       privateKey: privateKey,
       noself: options.noself ? options.noself : false,
-      silent: options.silent ? options.silent : false,
+      secret: options.accessToken ? options.accessToken : false,
+      private: options.private ? options.private : false,
       metadata: {
         time: Date.now(),
         client: _this.client,
@@ -156,6 +174,7 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
         type: 'subscribe'
       }
     }, function (payload) {
+      console.log('payload', payload);
       // Send off the payload to the server letting it know we're subscribing to a channel
       _this.socket.send(payload);
 
@@ -186,7 +205,44 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
     // Crap, Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
-      _this.subscribe(channel, callback, privateKey);
+      // call self with the same params that were initially passed.
+      _this.subscribe(channel, callback, opts);
+    }, 500);
+  }
+};
+
+/**
+ * Deny a client access to a channel
+ * @function csModDeny
+ * @param {string} channel - the channel in which to deny the client from
+ * @param {string} client - the client to deny
+ * @param {string} secret - the secret key associated with this channel
+ * @param {this} _this - this inheratance
+*/
+var csModDeny = function csModDeny(channel, client, secret, _this) {
+  // If we're connected, let's go ahead and publish our payload.
+  if (_this.connected) {
+    // Safely stringify our data before sending it to the server.
+    _this.stringify({
+      channel: channel,
+      client: client,
+      secret: secret,
+      metadata: {
+        time: Date.now(),
+        client: _this.client,
+        commonName: _this.commonName,
+        type: 'deny'
+      }
+    }, function (payload) {
+      // Send off the payload to the frontend that will attempt to deny a client
+      _this.socket.send(payload);
+    });
+  } else {
+    // Something is wrong and we're not connected yet, let's try again later.
+    console.warn('Failed to connect, attempting again in 1 second.');
+    setTimeout(function () {
+      // call self with the same params that were initially passed.
+      _this.info(channel, data, opts);
     }, 500);
   }
 };
@@ -196,11 +252,13 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
  * @module core/csModHistory
  * @param {string} channel - the channel to pull history from
  * @param {number} limit - the ammount of items to pull from history
- * @param {function} callback - history will be returned here
  * @param {object} opts - options such as privateKeys
  * @param {this} _this - this inheratance
 */
 var csModHistory = function csModHistory(channel, limit, opts, _this) {
+  // Since options are optional, if there are no options passed, we'll drop in
+  // an empty object if options are false or undefined. This will help fix top
+  // level null or undefined exceptions.
   var options = opts ? opts : {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
@@ -225,6 +283,7 @@ var csModHistory = function csModHistory(channel, limit, opts, _this) {
     // Something is wrong and we're not connected yet, let's try again later.
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
+      // call self with the same params that were initially passed.
       _this.history(channel, limit, opts);
     }, 500);
   }
@@ -328,6 +387,30 @@ var CatSnake = function () {
        * @param {this} this - this inheratance
       */
       csModSubscribe(channel, callback, opts, this);
+    }
+  }, {
+    key: 'deny',
+    value: function deny(channel, client, secret) {
+      /**
+       * Deny a client access to a channel
+       * @function csModDeny
+       * @param {string} channel - the channel in which to deny the client from
+       * @param {string} client - the client to deny
+       * @param {string} secret - the secret key associated with this channel
+      */
+      return csModDeny(channel, client, secret, this);
+    }
+  }, {
+    key: 'grant',
+    value: function grant(channel, client, secret) {
+      /**
+       * Grant a client access to a channel
+       * @function csModGrant
+       * @param {string} channel - the channel in which to grant the client access to
+       * @param {string} client - the client to grant access
+       * @param {string} secret - the secret key associated with this channel
+      */
+      return cdModGrant(channel, client, secret, this);
     }
   }]);
   return CatSnake;

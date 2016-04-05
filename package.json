@@ -1,6 +1,6 @@
 {
   "name": "catsnake",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.",
   "main": "build/mod/catsnake.js",
   "scripts": {

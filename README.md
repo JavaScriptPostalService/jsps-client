@@ -41,7 +41,7 @@ const catsnake = new CatSnake('ws://public.catsnake.io', {
 Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.
 
 ```javascript
-Postbox.subscribe('General', msg => {
+CatSnake.subscribe('General', msg => {
     // All messages published to this channel come through here.
     console.log(`We got a new message! ${msg}`);
 }, {
@@ -50,7 +50,14 @@ Postbox.subscribe('General', msg => {
     privateKey: 'ShhThisIsAPrivateChannel',
     // If you would like to be able to block clients in the future, or promote
     // other clients to be able to manage blocked users etc, add a secret.
-    secret: 'MySuperSecretKey'
+    secret: 'MySuperSecretKey',
+    // If you want the channel to be invite only, pass in private as true, this
+    // is different from the privateKey, with the private key all you need to do
+    // is pass the privateKey to an authorized user to grant them pubsub access
+    // with private you need to grant them access manually by clientID, which
+    // they will need to send to your client before trusting, this is not
+    // publicly avalible and creates a handshake.
+    private: false
 });
 
 ```
@@ -70,6 +77,23 @@ Whoops! It looks like the general channel is private. Let's pass in the privateK
 CatSnake.publish('General', msg => {
     message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
 }, 'ShhThisIsAPrivateChannel');
+```
+
+
+### Access Control
+Access control is not active yet.
+
+Catsnake gives you multiple options for access control to a channel. We'll talk
+about denying access to a channel as well as granting access.
+
+Denying a client access to a channel protected by access control is easy
+```javascript
+CatSnake.deny('General', 'client-123215', 'secretKey');
+```
+
+Granting a client access to a channel protected by access control is just as simple.
+```javascript
+CatSnake.grant('General', 'client-123215', 'secretKey');
 ```
 
 ### Info

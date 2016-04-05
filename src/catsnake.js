@@ -6,7 +6,9 @@ import {
   csModStringify,
   csModPublish,
   csModInfo,
-  csModSubscribe
+  csModSubscribe,
+  csModGrant,
+  csModDeny
 } from './modules/core/index';
 
 import {
@@ -100,5 +102,27 @@ class CatSnake {
      * @param {this} this - this inheratance
     */
     csModSubscribe(channel, callback, opts, this);
+  }
+
+  deny(channel, client, secret) {
+    /**
+     * Deny a client access to a channel
+     * @function csModDeny
+     * @param {string} channel - the channel in which to deny the client from
+     * @param {string} client - the client to deny
+     * @param {string} secret - the secret key associated with this channel
+    */
+    return csModDeny(channel, client, secret, this);
+  }
+
+  grant(channel, client, secret) {
+    /**
+     * Grant a client access to a channel
+     * @function csModGrant
+     * @param {string} channel - the channel in which to grant the client access to
+     * @param {string} client - the client to grant access
+     * @param {string} secret - the secret key associated with this channel
+    */
+    return cdModGrant(channel, client, secret, this);
   }
 }
