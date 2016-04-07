@@ -10,7 +10,11 @@ a JavaScript object is published to that channel your device or client will be n
 
 The best part is it's incredibly fast.
 
+
+## Something worth noting
+
 Catsnake will soon feature pluggable modules for things like Mapping, IOT and more.
+In addition we will have libraries for Python and Java, as well as native implementations for mobile development. Stay tuned :)
 
 ## Usage 
 
