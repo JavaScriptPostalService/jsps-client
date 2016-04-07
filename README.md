@@ -8,8 +8,9 @@ CatSnake JS is a PubSub solution that allows realtime communications between cli
 devices. With CatSnake you can simply subscribe a device to a channel and any time
 a JavaScript object is published to that channel your device or client will be notified.
 
-The best part is it's incredibly fast. CatSnake uses WebSockets for communication
-which are blazing fast. For practicle use cases check out our website over at http://catsnake.io
+The best part is it's incredibly fast.
+
+Catsnake will soon feature pluggable modules for things like Mapping, IOT and more.
 
 ## Usage 
 
