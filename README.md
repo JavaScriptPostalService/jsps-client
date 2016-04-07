@@ -11,7 +11,7 @@ a JavaScript object is published to that channel your device or client will be n
 The best part is it's incredibly fast. CatSnake uses WebSockets for communication
 which are blazing fast. For practicle use cases check out our website over at http://catsnake.io
 
-## Usage
+## Usage 
 
 ### Setup
 
