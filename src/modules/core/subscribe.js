@@ -1,3 +1,8 @@
+'use strict';
+
+// TODO: we should probably add webpack soon.
+import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
+
 /**
  * csModSubscribe module.
  * @module core/csModSubscribe
@@ -29,14 +34,16 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
         type: 'subscribe'
       }
     }, payload => {
-      console.log('payload', payload);
       // Send off the payload to the server letting it know we're subscribing to a channel
       _this.socket.send(payload);
 
       // Whenever the server has new info it will tell us here.
       _this.socket.onmessage = function(msg) {
-        if (JSON.parse(msg.data).channel === channel) {
-          callback(JSON.parse(msg.data));
+        let decodedMsg = msgpack.decode(
+          new Uint8Array(msg.data)
+        );
+        if (decodedMsg.channel === channel) {
+          callback(decodedMsg);
         }
       };
 

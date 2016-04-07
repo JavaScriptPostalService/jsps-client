@@ -27,6 +27,8 @@ class CatSnake {
    */
   constructor(address, options) {
     this.socket = new WebSocket(address);
+    this.socket.binaryType = 'arraybuffer';
+
     this.connected = false;
 
     // Genrate a unique clientid

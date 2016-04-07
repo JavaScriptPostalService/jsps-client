@@ -1,3 +1,8 @@
+'use strict';
+
+// TODO: we should probably add webpack soon.
+import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
+
 /**
  * csModStringify module.
  * @module core/csModStringify
@@ -10,7 +15,7 @@
 export const csModStringify = (data, callback) => {
   try {
     callback(
-      JSON.stringify(data)
+      msgpack.encode(data)
     );
   } catch (e) {
     console.warn('attempted to send invalid data to the pubsub server.');
