@@ -27,15 +27,18 @@ For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/cats
 
 If you're using npm you can simply require and create a catsnake client.
 ```javascript
-const CatSnake = require('catsnake');
-const catsnake = new CatSnake('ws://104.236.219.214:3081', {
+const catsnake = require('catsnake');
+const CatSnake = new catsnake('ws://104.236.219.214:3081', {
     commonName: 'A Random Catsnake'
 });
-
 ```
 
 If you're using this without a module builder just go ahead and use the following without the require. CatSnake will
 already be defined.
+
+**NOTE:** The address used in this example is being run on a 512mb DigitalOcean droplet. It might not be the fastest implementation but can be used for development. You should stand up your own catsnake-server for production environments. 
+
+We will also be beefing up our server shortly.
 
 
 ### Subscribe
