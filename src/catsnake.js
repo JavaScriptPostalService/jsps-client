@@ -24,6 +24,8 @@ class CatSnake {
    * @constructs CatSnake
    * @param {string} address - the address of the catsnake server
    * @param {object} options - options such as common name and others
+   * @param {string} options.commonName - common name of your client
+   * @param {boolean} options.bypassThrottle - bypass client side throttling, this does not prevent serverside throttling
    */
   constructor(address, options) {
     this.socket = new WebSocket(address);
