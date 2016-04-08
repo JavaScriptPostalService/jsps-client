@@ -945,12 +945,16 @@ setInterval(function () {
   requests.shift();
 }, 1000 / catsnakeConfig.requestsPerSecond);
 
-var csModThrottle = function csModThrottle(data, callback) {
-  if (requests.length < catsnakeConfig.requestsPerSecond) {
-    requests.push(Date.now());
+var csModThrottle = function csModThrottle(data, callback, _this) {
+  if (_this.bypassThrottle) {
     callback(data);
   } else {
-    console.warn('You are trying to send over ' + catsnakeConfig.requestsPerSecond + ' messages per second, check that your application is working correctly.');
+    if (requests.length < catsnakeConfig.requestsPerSecond) {
+      requests.push(Date.now());
+      callback(data);
+    } else {
+      console.warn('You are trying to send over ' + catsnakeConfig.requestsPerSecond + ' messages per second, check that your application is working correctly.');
+    }
   }
 };
 
@@ -963,11 +967,11 @@ var csModThrottle = function csModThrottle(data, callback) {
 
 // A dead simple try catch for stringifying objects. In the future we'd like this
 // to somehow minify the string and make for a smaller payload
-var csModStringify = function csModStringify(data, callback) {
+var csModStringify = function csModStringify(data, callback, _this) {
   // Client side packet throttling, enforces serverside as well.
   csModThrottle(data, function (throttledData) {
     callback(msgpack.encode(throttledData));
-  });
+  }, _this);
 };
 
 /**
@@ -1221,6 +1225,8 @@ var CatSnake = function () {
 
     this.commonName = options.commonName ? options.commonName : config.defaultName;
 
+    this.bypassThrottle = options.bypassThrottle ? options.bypassThrottle : false;
+
     // Fired when the connection is made to the server
     this.socket.onopen = function (event) {
       _this.connected = true;
@@ -1241,7 +1247,7 @@ var CatSnake = function () {
        * @param {object} data - the object to attempt to stringify
        * @callback {string} - Returns a stringified object
       */
-      return csModStringify(data, callback);
+      return csModStringify(data, callback, this);
     }
 
     /**

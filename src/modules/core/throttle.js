@@ -15,11 +15,15 @@ setInterval(() => {
   requests.shift();
 }, 1000 / catsnakeConfig.requestsPerSecond);
 
-export const csModThrottle = (data, callback) => {
-  if (requests.length < catsnakeConfig.requestsPerSecond) {
-    requests.push(Date.now());
+export const csModThrottle = (data, callback, _this) => {
+  if (_this.bypassThrottle) {
     callback(data);
   } else {
-    console.warn(`You are trying to send over ${catsnakeConfig.requestsPerSecond} messages per second, check that your application is working correctly.`);
+    if (requests.length < catsnakeConfig.requestsPerSecond) {
+      requests.push(Date.now());
+      callback(data);
+    } else {
+      console.warn(`You are trying to send over ${catsnakeConfig.requestsPerSecond} messages per second, check that your application is working correctly.`);
+    }
   }
 };

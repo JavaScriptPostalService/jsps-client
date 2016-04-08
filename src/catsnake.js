@@ -37,6 +37,9 @@ class CatSnake {
     this.commonName = (options.commonName) ?
       options.commonName : config.defaultName;
 
+    this.bypassThrottle = (options.bypassThrottle) ?
+      options.bypassThrottle : false;
+
     // Fired when the connection is made to the server
     this.socket.onopen = event => {
       this.connected = true;
@@ -55,7 +58,7 @@ class CatSnake {
      * @param {object} data - the object to attempt to stringify
      * @callback {string} - Returns a stringified object
     */
-    return csModStringify(data, callback);
+    return csModStringify(data, callback, this);
   }
 
   /**

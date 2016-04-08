@@ -12,11 +12,11 @@ import {csModThrottle} from './throttle';
 
 // A dead simple try catch for stringifying objects. In the future we'd like this
 // to somehow minify the string and make for a smaller payload
-export const csModStringify = (data, callback) => {
+export const csModStringify = (data, callback, _this) => {
   // Client side packet throttling, enforces serverside as well.
   csModThrottle(data, throttledData => {
     callback(
       msgpack.encode(throttledData)
     );
-  });
+  }, _this);
 };
