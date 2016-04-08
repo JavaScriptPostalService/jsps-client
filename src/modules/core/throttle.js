@@ -9,6 +9,7 @@ import {catsnakeConfig} from '../../config';
 */
 
 let requests = [];
+let queue = [];
 
 // Only allow 100 messages per second.
 setInterval(() => {
@@ -17,12 +18,22 @@ setInterval(() => {
 
 export const csModThrottle = (data, callback, _this) => {
   if (_this.bypassThrottle) {
+    // This client has chosen to bypass throttling, dispatch message
     callback(data);
   } else {
     if (requests.length < catsnakeConfig.requestsPerSecond) {
+      if (queue.length) {
+        // Take care of any queued requests before sending out new ones.
+        callback(queue[0]);
+        queue.shift();
+      } else {
+        // All is good, dispatch the message.
+        callback(data);
+      }
       requests.push(Date.now());
-      callback(data);
     } else {
+      // The requests are coming in too fast, let's queue this one for later.
+      queue.push(data);
       console.warn(`You are trying to send over ${catsnakeConfig.requestsPerSecond} messages per second, check that your application is working correctly.`);
     }
   }
