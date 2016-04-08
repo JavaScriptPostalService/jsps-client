@@ -17,7 +17,11 @@ The best part is Catsnake is built using WebSockets and
 Catsnake will soon feature pluggable modules for things like Mapping, IOT and more.
 In addition we will have libraries for Python and Java, as well as native implementations for mobile development. Stay tuned :)
 
-## Usage
+## Docs
+
+For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/catsnake-client/master/docs/index.html)
+
+## Quickstart Guide
 
 ### Setup
 

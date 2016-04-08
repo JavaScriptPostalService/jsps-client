@@ -75,6 +75,7 @@ class CatSnake {
    * @param {string} channel - the channel to look at
    * @param {object} data - additional information for request
    * @param {object} opts - additional options for subscriptions
+   * @param {string} opts.privateKey - private key used for getting info from private channels
   */
   info(channel, data, opts) {
     csModInfo(channel, data, opts, this);
@@ -86,6 +87,7 @@ class CatSnake {
    * @param {string} channel - the channel to pull history from
    * @param {number} limit - the ammount of items to pull from history
    * @param {object} opts - options such as privateKeys
+   * @param {string} opts.privateKey - private key used for getting history from private channels
   */
   history(channel, limit, opts) {
     csModHistory(channel, limit, opts, this);
@@ -95,8 +97,13 @@ class CatSnake {
    * Subscribe to a channel
    * @function subscribe
    * @param {string} channel - the channel to subscribe to
-   * @callback {function} callback - new messages are returned here via msg
+   * @param {function} callback - new messages are returned here via msg
+   * @param {object} callback.msg - a new payload published to this channel
    * @param {object} opts - additional options for subscriptions
+   * @param {string} opts.privateKey - private key used for subscribing to private channels
+   * @param {string} opts.noself - subscribe for everything but ignore your own payloads
+   * @param {string} opts.accessToken - used as a key to modify private channels. Not to be confused with privateKey
+   * @param {string} opts.private - make this channel private, clients can only connect if granted access
   */
   subscribe(channel, callback, opts) {
     csModSubscribe(channel, callback, opts, this);

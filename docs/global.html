@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li>
+					<li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#subscribe">subscribe</a></li>
 				</ul>
 			</li>
 			
@@ -611,7 +611,57 @@
 
             
 
-            <td class="description last">options such as privateKeys</td>
+            <td class="description last">options such as privateKeys
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>privateKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">private key used for getting history from private channels</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -787,7 +837,57 @@
 
             
 
-            <td class="description last">additional options for subscriptions</td>
+            <td class="description last">additional options for subscriptions
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>privateKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">private key used for getting info from private channels</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1027,17 +1127,11 @@
     
 </dd>
 
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        <dl>
-                
+        
+            
 <hr>
 <dt>
-    <h4 class="name" id="callback"><span class="type-signature"></span>callback(channel, opts)</h4>
+    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe(channel, callback, opts)</h4>
     
     
 </dt>
@@ -1104,6 +1198,80 @@
 
         <tr>
             
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">new messages are returned here via msg
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>msg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a new payload published to this channel</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>opts</code></td>
             
 
@@ -1121,7 +1289,129 @@
 
             
 
-            <td class="description last">additional options for subscriptions</td>
+            <td class="description last">additional options for subscriptions
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>privateKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">private key used for subscribing to private channels</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>noself</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">subscribe for everything but ignore your own payloads</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accessToken</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">used as a key to modify private channels. Not to be confused with privateKey</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>private</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">make this channel private, clients can only connect if granted access</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1185,7 +1475,13 @@
     
 </dd>
 
-            
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
                 
 <hr>
 <dt>
@@ -1359,7 +1655,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-04-07T21:40:59-04:00
+		on 2016-04-07T21:54:42-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
