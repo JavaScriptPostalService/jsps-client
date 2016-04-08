@@ -1,6 +1,6 @@
 {
   "name": "catsnake",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Super fast, and easy to use; realtime messaging.",
   "main": "build/mod/catsnake.js",
   "scripts": {
@@ -41,6 +41,7 @@
     "gulp-clone": "^1.0.0",
     "gulp-connect": "^3.1.0",
     "gulp-git": "^1.7.0",
+    "gulp-insert": "^0.5.0",
     "gulp-stylus": "^2.3.0",
     "gulp-util": "^3.0.7",
     "rollup": "^0.25.4",
@@ -54,7 +55,6 @@
     "gulp-jsdoc3": "^0.2.1"
   },
   "dependencies": {
-    "gulp-insert": "^0.5.0",
     "msgpack-lite": "^0.1.17"
   }
 }
