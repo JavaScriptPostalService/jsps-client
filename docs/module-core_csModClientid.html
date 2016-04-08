@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Index</title>
+	<title>Documentation Module: core/csModClientid</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -77,62 +77,85 @@
 		<div id="main">
 			
 
+	<h1 class="page-title">Module: core/csModClientid</h1>
+<section>
+
+<header>
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">csModClientid module.</div>
+        
+
+        
+<dl class="details">
+    
+
 	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
-
-
-
-
-
-
-
-
-	
 	
 
+	
+
+	
+
+	
+</dl>
 
 
+        
+    
+    </div>
 
+    
 
-    <section class="readme-section">
-        <article><h1>CatSnake JS</h1><p>CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.</p>
-<h2>What is CatSnake JS?</h2><p>CatSnake JS is a PubSub solution that allows realtime communications between clients and
-devices. With CatSnake you can simply subscribe a device to a channel and any time
-a JavaScript object is published to that channel your device or client will be notified.</p>
-<p>The best part is Catsnake is built using WebSockets and
-<a href="http://msgpack.org">MessagePack</a> so it's incredibly fast.</p>
-<h2>Something worth noting</h2><p>Catsnake will soon feature pluggable modules for things like Mapping, IOT and more.
-In addition we will have libraries for Python and Java, as well as native implementations for mobile development. Stay tuned :)</p>
-<h2>Docs</h2><p>For detailed documentation <a href="https://rawgit.com/catsnakejs/catsnake-client/master/docs/global.html">visit this link.</a></p>
-<h2>Quickstart Guide</h2><h3>Setup</h3><p>If you're using npm you can simply require and create a catsnake client.</p>
-<pre class="prettyprint source lang-javascript"><code>const catsnake = require('catsnake');
-const CatSnake = new catsnake('ws://catsnake.io:3081', {
-    commonName: 'A Random Catsnake'
-});</code></pre><p>If you're using this without a module builder just go ahead and use the following without the require. CatSnake will
-already be defined.</p>
-<h3>Subscribe</h3><p>Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.subscribe('General', msg => console.log(msg));</code></pre><h3>Publish</h3><p>Now that you've subscibed to a channel, let's publish a message to all of the other subscribers, and ourselves ofcourse.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.publish('General', msg => {
-    message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
-});</code></pre><h3>Access Control</h3><p>Catsnake gives you multiple options for access control to a channel. We'll talk
-about denying access to a channel as well as granting access.</p>
-<p>Denying a client access to a channel protected by access control is easy</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.deny('General', 'client-123215', 'secretKey');</code></pre><p>Granting a client access to a channel protected by access control is just as simple.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.grant('General', 'client-123215', 'secretKey');</code></pre><h3>Info</h3><p>Nice, now let's get info from the channel, this will return information like connected clients, author, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.info('General');</code></pre><h3>Unsubscribe</h3><p>Well that was easy. Let's go over one last thing, before we get into the more advanced features of jsps.
-Once you're done pubsubbing you can unsubscribe from the channel. This will leave your client in an offline state but
-you can later reconnect with the same client id via the subscribe method, we will go over this more in the advanced
-features below.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.unsubscribe('General');</code></pre><h3>History</h3><p>Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
-History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.history('General', limit);</code></pre></article>
-    </section>
+    
 
+    
 
+    
 
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

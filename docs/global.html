@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-core_config.html">core/config</a></li><li><a href="module-core_csModClientid.html">core/csModClientid</a></li><li><a href="module-core_csModHistory.html">core/csModHistory</a></li><li><a href="module-core_csModInfo.html">core/csModInfo</a></li><li><a href="module-core_csModPublish.html">core/csModPublish</a></li><li><a href="module-core_csModThrottle.html">core/csModThrottle</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="CatSnake.html">CatSnake</a></li>
@@ -40,7 +47,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#subscribe">subscribe</a></li>
+					<li><a href="global.html#csModDeny">csModDeny</a></li><li><a href="global.html#csModGrant">csModGrant</a></li><li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#subscribe">subscribe</a></li>
 				</ul>
 			</li>
 			
@@ -148,6 +155,406 @@
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="csModDeny"><span class="type-signature"></span>csModDeny(channel, client, secret, _this)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Deny a client access to a channel
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the channel in which to deny the client from</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the client to deny</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>secret</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the secret key associated with this channel</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_this</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">this</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">this inheratance</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="csModGrant"><span class="type-signature"></span>csModGrant(channel, client, secret, _this)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Grant a client access to a channel
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the channel in which to grant the client access to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the client to grant access</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>secret</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the secret key associated with this channel</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_this</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">this</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">this inheratance</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
             
 <hr>
 <dt>
@@ -1485,6 +1892,310 @@
                 
 <hr>
 <dt>
+    <h4 class="name" id="callback"><span class="type-signature"></span>callback(channel, opts, _this)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        csModSubscribe module.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the channel to subscribe to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">additional options for subscriptions</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_this</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">this</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">this inheratance</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id="callback"><span class="type-signature"></span>callback(data)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        csModStringify module.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the object to attempt to stringify</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt>
     <h4 class="name" id="stringifyinternal"><span class="type-signature"></span>stringify (data)</h4>
     
     
@@ -1655,7 +2366,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-04-07T21:54:42-04:00
+		on 2016-04-08T15:35:11-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
