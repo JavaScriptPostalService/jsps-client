@@ -1,6 +1,6 @@
 {
   "name": "catsnake",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Super fast, and easy to use; realtime messaging.",
   "main": "build/mod/catsnake.js",
   "scripts": {
