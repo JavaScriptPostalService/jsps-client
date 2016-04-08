@@ -19,7 +19,7 @@ In addition we will have libraries for Python and Java, as well as native implem
 
 ## Docs
 
-For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/catsnake-client/master/docs/index.html)
+For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/catsnake-client/master/docs/global.html)
 
 ## Quickstart Guide
 
