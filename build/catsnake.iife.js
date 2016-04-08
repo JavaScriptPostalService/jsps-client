@@ -39,6 +39,15 @@
   function __commonjs(fn, module) { return module = { exports: {} }, fn(module, module.exports, __commonjs_global), module.exports; }
 
   /**
+   * config module.
+   * @module core/config
+   */
+  var catsnakeConfig = {
+    defaultName: 'A random catsnake',
+    requestsPerSecond: 15
+  };
+
+  /**
    * csModClientid module.
    * @module core/csModClientid
    * @return {string} - Returns a new random, unique clientid
@@ -924,6 +933,29 @@
   var msgpack = (msgpack_min && typeof msgpack_min === 'object' && 'default' in msgpack_min ? msgpack_min['default'] : msgpack_min);
 
   /**
+   * csModThrottle module.
+   * @module core/csModThrottle
+   * @param {object} data - the object to attempt to send
+   * @param {object} callback - returns data, if acceptable.
+  */
+
+  var requests = [];
+
+  // Only allow 100 messages per second.
+  setInterval(function () {
+    requests.shift();
+  }, 1000 / catsnakeConfig.requestsPerSecond);
+
+  var csModThrottle = function csModThrottle(data, callback) {
+    if (requests.length < catsnakeConfig.requestsPerSecond) {
+      requests.push(Date.now());
+      callback(data);
+    } else {
+      console.warn('You are trying to send over ' + catsnakeConfig.requestsPerSecond + ' messages per second, check that your application is working correctly.');
+    }
+  };
+
+  /**
    * csModStringify module.
    * @module core/csModStringify
    * @param {object} data - the object to attempt to stringify
@@ -933,11 +965,10 @@
   // A dead simple try catch for stringifying objects. In the future we'd like this
   // to somehow minify the string and make for a smaller payload
   var csModStringify = function csModStringify(data, callback) {
-    try {
-      callback(msgpack.encode(data));
-    } catch (e) {
-      console.warn('attempted to send invalid data to the pubsub server.');
-    }
+    // Client side packet throttling, enforces serverside as well.
+    csModThrottle(data, function (throttledData) {
+      callback(msgpack.encode(throttledData));
+    });
   };
 
   /**

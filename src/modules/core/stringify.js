@@ -2,7 +2,7 @@
 
 // TODO: we should probably add webpack soon.
 import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
-
+import {csModThrottle} from './throttle';
 /**
  * csModStringify module.
  * @module core/csModStringify
@@ -13,11 +13,10 @@ import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
 // A dead simple try catch for stringifying objects. In the future we'd like this
 // to somehow minify the string and make for a smaller payload
 export const csModStringify = (data, callback) => {
-  try {
+  // Client side packet throttling, enforces serverside as well.
+  csModThrottle(data, throttledData => {
     callback(
-      msgpack.encode(data)
+      msgpack.encode(throttledData)
     );
-  } catch (e) {
-    console.warn('attempted to send invalid data to the pubsub server.');
-  }
+  });
 };

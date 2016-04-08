@@ -3,5 +3,6 @@
  * @module core/config
  */
 export const catsnakeConfig = {
-  defaultName: 'A random catsnake'
+  defaultName: 'A random catsnake',
+  requestsPerSecond: 15
 };
