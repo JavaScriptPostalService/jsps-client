@@ -28,7 +28,7 @@ For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/cats
 If you're using npm you can simply require and create a catsnake client.
 ```javascript
 const CatSnake = require('catsnake');
-const catsnake = new CatSnake('ws://public.catsnake.io', {
+const catsnake = new CatSnake('ws://104.236.219.214:3081', {
     commonName: 'A Random Catsnake'
 });
 
