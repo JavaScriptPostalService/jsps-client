@@ -25,8 +25,6 @@ If you're using npm you can simply require and create a catsnake client.
 ```javascript
 const CatSnake = require('catsnake');
 const catsnake = new CatSnake('ws://public.catsnake.io', {
-    // The common name is how people will know who or what a client is.
-    // If no commonName is provided your client will be known as A Random Catsnake
     commonName: 'A Random Catsnake'
 });
 
@@ -34,13 +32,6 @@ const catsnake = new CatSnake('ws://public.catsnake.io', {
 
 If you're using this without a module builder just go ahead and use the following without the require. CatSnake will
 already be defined.
-```javascript
-const catsnake = new CatSnake('ws://public.catsnake.io', {
-    // The common name is how people will know who or what a client is.
-    // If no commonName is provided your client will be known as A Random Catsnake
-    commonName: 'A Random Catsnake'
-});
-```
 
 
 ### Subscribe
@@ -48,25 +39,6 @@ Before you can start sending messages, you should subscribe to a channel (but yo
 
 ```javascript
 CatSnake.subscribe('General', msg => console.log(msg));
-```
-
-There are ofcourse additional options avalible.
-```javascript
-CatSnake.subscribe('General', msg => console.log(msg), {
-   // If you're passing around some private information you can make your channel private by simply passing in a privateKey.
-   // Anyone who want's to later publish to this channel will need this key to do so!
-   privateKey: 'ShhThisIsAPrivateChannel',
-   // If you would like to be able to block clients in the future, or promote
-   // other clients to be able to manage blocked users etc, add a secret.
-   secret: 'MySuperSecretKey',
-   // If you want the channel to be invite only, pass in private as true, this
-   // is different from the privateKey, with the private key all you need to do
-   // is pass the privateKey to an authorized user to grant them pubsub access
-   // with private you need to grant them access manually by clientID, which
-   // they will need to send to your client before trusting, this is not
-   // publicly avalible and creates a handshake.
-   private: false
-}
 ```
 
 ### Publish
@@ -77,15 +49,6 @@ CatSnake.publish('General', msg => {
     message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
 });
 ```
-
-
-Whoops! It looks like the general channel is private. Let's pass in the privateKey the same way we do in our subscribe method.
-```javascript
-CatSnake.publish('General', msg => {
-    message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
-}, 'ShhThisIsAPrivateChannel');
-```
-
 
 ### Access Control
 
@@ -125,7 +88,5 @@ CatSnake.unsubscribe('General');
 Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
 History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'
 ```javascript
-CatSnake.history('General', limit, {
-  privateKey: 'ShhThisIsAPrivateChannel' // Optional
-});
+CatSnake.history('General', limit);
 ```

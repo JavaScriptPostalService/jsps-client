@@ -51,80 +51,76 @@ class CatSnake {
   stringify(data, callback) {
     /**
      * Tries to return a stringified object.
-     * @function csModStringify
+     * @function stringify (internal)
      * @param {object} data - the object to attempt to stringify
      * @callback {string} - Returns a stringified object
     */
     return csModStringify(data, callback);
   }
 
+  /**
+   * Publishes a message to all subscribers
+   * @function publish
+   * @param {string} channel - the channel to publish to
+   * @param {object} data - the object to publish
+   * @param {string} privateKey - optional private key for private channels
+  */
   publish(channel, data, privateKey) {
-    /**
-     * Publishes a message to all subscribers
-     * @function csModPublish
-     * @param {string} channel - the channel to publish to
-     * @param {object} data - the object to publish
-     * @param {string} privateKey - optional private key for private channels
-     * @param {this} this - this inheratance
-    */
     csModPublish(channel, data, privateKey, this);
   }
 
+  /**
+   * List channels, get client info.
+   * @function info
+   * @param {string} channel - the channel to look at
+   * @param {object} data - additional information for request
+   * @param {object} opts - additional options for subscriptions
+  */
   info(channel, data, opts) {
-    /**
-     * List all clients
-     * @function csModInfo
-     * @param {string} channel - the channel to look at
-     * @param {object} data - additional information for request
-     * @param {object} opts - additional options for subscriptions
-     * @param {this} this - this inheratance
-    */
     csModInfo(channel, data, opts, this);
   }
 
+  /**
+   * Get message history from a channel.
+   * @function history
+   * @param {string} channel - the channel to pull history from
+   * @param {number} limit - the ammount of items to pull from history
+   * @param {object} opts - options such as privateKeys
+  */
   history(channel, limit, opts) {
-    /**
-     * List all clients
-     * @function csModHistory
-     * @param {string} channel - the channel to pull history from
-     * @param {number} limit - the ammount of items to pull from history
-     * @param {object} opts - options such as privateKeys
-     * @param {this} this - this inheratance
-    */
     csModHistory(channel, limit, opts, this);
   }
 
+  /**
+   * Subscribe to a channel
+   * @function subscribe
+   * @param {string} channel - the channel to subscribe to
+   * @callback {function} callback - new messages are returned here via msg
+   * @param {object} opts - additional options for subscriptions
+  */
   subscribe(channel, callback, opts) {
-    /**
-     * Subscribe to a channel
-     * @function csModSubscribe
-     * @param {string} channel - the channel to subscribe to
-     * @callback {function} callback - new messages are returned here via msg
-     * @param {object} opts - additional options for subscriptions
-     * @param {this} this - this inheratance
-    */
     csModSubscribe(channel, callback, opts, this);
   }
 
+  /**
+   * Deny a client access to a channel
+   * @function deny
+   * @param {string} channel - the channel in which to deny the client from
+   * @param {string} client - the client to deny
+   * @param {string} secret - the secret key associated with this channel
+  */
   deny(channel, client, secret) {
-    /**
-     * Deny a client access to a channel
-     * @function csModDeny
-     * @param {string} channel - the channel in which to deny the client from
-     * @param {string} client - the client to deny
-     * @param {string} secret - the secret key associated with this channel
-    */
     return csModDeny(channel, client, secret, this);
   }
 
+  /**
+   * Grant a client access to a channel
+   * @function grant
+   * @param {string} channel - the channel in which to grant the client access to
+   * @param {string} client - the client to grant access
+   * @param {string} secret - the secret key associated with this channel
+  */
   grant(channel, client, secret) {
-    /**
-     * Grant a client access to a channel
-     * @function csModGrant
-     * @param {string} channel - the channel in which to grant the client access to
-     * @param {string} client - the client to grant access
-     * @param {string} secret - the secret key associated with this channel
-    */
     return cdModGrant(channel, client, secret, this);
   }
 }
