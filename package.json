@@ -1,6 +1,6 @@
 {
   "name": "catsnake",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Super fast, and easy to use; realtime messaging.",
   "main": "build/mod/catsnake.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wski/catsnake-client.git"
+    "url": "https://github.com/catsnakejs/catsnake-client.git"
   },
   "keywords": [
     "catsnake",
@@ -21,14 +21,14 @@
     "realtime"
   ],
   "authors": [
-    "wski <contact.mattdylan@gmail.com>",
+    "catsnakejs <contact.mattdylan@gmail.com>",
     "hoganmaps <chris@hogan.io>"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wski/catsnake-client/issues"
+    "url": "https://github.com/catsnakejs/catsnake-client/issues"
   },
-  "homepage": "https://github.com/wski/catsnake-client",
+  "homepage": "https://github.com/catsnakejs/catsnake-client",
   "devDependencies": {
     "babel-core": "^6.6.5",
     "babel-preset-es2015": "^6.6.0",

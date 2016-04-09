@@ -79,7 +79,7 @@ CatSnake.info('General');
 ### Unsubscribe
 Well that was easy. Let's go over one last thing, before we get into the more advanced features of jsps.
 Once you're done pubsubbing you can unsubscribe from the channel. This will leave your client in an offline state but
-you can later reconnect with the same client id via the subscribe method, we will go over this more in the advanced
+you can later reconnect with the same client id via the `new Catsnake` method, we will go over this more in the advanced
 features below.
 
 ```javascript

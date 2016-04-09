@@ -26,6 +26,7 @@ class CatSnake {
    * @param {object} options - options such as common name and others
    * @param {string} options.commonName - common name of your client
    * @param {boolean} options.bypassThrottle - bypass client side throttling, this does not prevent serverside throttling
+   * @param {string} options.clientId - reconnect with an old clientId
    */
   constructor(address, options) {
     this.socket = new WebSocket(address);
@@ -34,7 +35,8 @@ class CatSnake {
     this.connected = false;
 
     // Genrate a unique clientid
-    this.client = csModClientid();
+    this.client = (options.clientId) ?
+      options.clientId : csModClientid();
 
     this.commonName = (options.commonName) ?
       options.commonName : config.defaultName;
