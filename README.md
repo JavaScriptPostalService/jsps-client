@@ -1,6 +1,6 @@
 # CatSnake JS
 
-CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.
+[![](https://nodei.co/npm/catsnake.png?downloads=true&downloadRank=true)](https://npmjs.com/package/catsnake)
 
 ## What is CatSnake JS?
 
