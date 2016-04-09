@@ -1,5 +1,3 @@
-# CatSnake JS
-
 [![](https://nodei.co/npm/catsnake.png?downloads=true&downloadRank=true)](https://npmjs.com/package/catsnake)
 
 ## What is CatSnake JS?
