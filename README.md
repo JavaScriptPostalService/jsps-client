@@ -25,6 +25,12 @@ For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/cats
 
 ### Setup
 
+For quick use you can simply include catsnke in your `<head>`.
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/catsnake/0.2.5/catsnake.js"></script>
+```
+
 If you're using npm you can simply require and create a catsnake client.
 ```javascript
 const catsnake = require('catsnake');
