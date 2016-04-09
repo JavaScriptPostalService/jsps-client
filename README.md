@@ -57,6 +57,22 @@ CatSnake.publish('General', msg => {
 });
 ```
 
+### History
+
+Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
+History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'
+```javascript
+CatSnake.history('General', limit);
+```
+
+### Info
+
+Nice, now let's get info from the channel, this will return information like connected clients, author, etc.
+
+```javascript
+CatSnake.info('General');
+```
+
 ### Access Control
 
 Catsnake gives you multiple options for access control to a channel. We'll talk
@@ -72,14 +88,6 @@ Granting a client access to a channel protected by access control is just as sim
 CatSnake.grant('General', 'client-123215', 'secretKey');
 ```
 
-### Info
-
-Nice, now let's get info from the channel, this will return information like connected clients, author, etc.
-
-```javascript
-CatSnake.info('General');
-```
-
 ### Unsubscribe
 Well that was easy. Let's go over one last thing, before we get into the more advanced features of jsps.
 Once you're done pubsubbing you can unsubscribe from the channel. This will leave your client in an offline state but
@@ -88,12 +96,4 @@ features below.
 
 ```javascript
 CatSnake.unsubscribe('General');
-```
-
-### History
-
-Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
-History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'
-```javascript
-CatSnake.history('General', limit);
 ```
