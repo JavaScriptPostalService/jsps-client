@@ -31,8 +31,8 @@ For quick use you can simply include catsnke in your `<head>`.
 
 If you're using npm you can simply require and create a catsnake client.
 ```javascript
-const catsnake = require('catsnake');
-const CatSnake = new catsnake('ws://catsnake.io:3081', {
+const CatSnake = require('catsnake');
+const cs = new CatSnake('ws://catsnake.io:3081', {
     commonName: 'A Random Catsnake'
 });
 ```
@@ -45,14 +45,14 @@ already be defined.
 Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.
 
 ```javascript
-CatSnake.subscribe('General', msg => console.log(msg));
+cs.subscribe('General', msg => console.log(msg));
 ```
 
 ### Publish
 Now that you've subscibed to a channel, let's publish a message to all of the other subscribers, and ourselves ofcourse.
 
 ```javascript
-CatSnake.publish('General', msg => {
+cs.publish('General', msg => {
     message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
 });
 ```
@@ -62,7 +62,7 @@ CatSnake.publish('General', msg => {
 Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
 History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'
 ```javascript
-CatSnake.history('General', limit);
+cs.history('General', limit);
 ```
 
 ### Info
@@ -70,7 +70,7 @@ CatSnake.history('General', limit);
 Nice, now let's get info from the channel, this will return information like connected clients, author, etc.
 
 ```javascript
-CatSnake.info('General');
+cs.info('General');
 ```
 
 ### Access Control
@@ -80,12 +80,12 @@ about denying access to a channel as well as granting access.
 
 Denying a client access to a channel protected by access control is easy
 ```javascript
-CatSnake.deny('General', 'client-123215', 'secretKey');
+cs.deny('General', 'client-123215', 'secretKey');
 ```
 
 Granting a client access to a channel protected by access control is just as simple.
 ```javascript
-CatSnake.grant('General', 'client-123215', 'secretKey');
+cs.grant('General', 'client-123215', 'secretKey');
 ```
 
 ### Unsubscribe
@@ -95,5 +95,5 @@ you can later reconnect with the same client id via the `new Catsnake` method, w
 features below.
 
 ```javascript
-CatSnake.unsubscribe('General');
+cs.unsubscribe('General');
 ```
