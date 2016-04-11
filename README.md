@@ -1,10 +1,11 @@
-[![](https://nodei.co/npm/pubsub.png?downloads=true&downloadRank=true)](https://npmjs.com/package/pubsub)
+![Logo](https://avatars1.githubusercontent.com/u/18083257?v=3&s=100)
 
  [![npm](https://img.shields.io/npm/v/pubsub.svg?style=flat-square)]()
 [![GitHub issues](https://img.shields.io/github/issues/catsnakejs/catsnake-client.svg?style=flat-square)](https://github.com/catsnakejs/catsnake-client/issues)
 [![deps](https://img.shields.io/david/catsnakejs/catsnake-client.svg?style=flat-square)]()
 [![codes style](https://img.shields.io/badge/code%20style-google-brightgreen.svg?style=flat-square)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 
 # What is CatSnake?
 
@@ -17,7 +18,8 @@ For detailed documentation [visit this link.](https://rawgit.com/catsnakejs/cats
 
 # Quickstart Guide
 
-## Setup
+## Install
+[![](https://nodei.co/npm/pubsub.png?downloads=true&downloadRank=true)](https://npmjs.com/package/pubsub)
 
 For quick use you can simply include catsnke in your `<head>`.
 
