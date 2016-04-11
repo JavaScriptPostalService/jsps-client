@@ -1,14 +1,14 @@
-[![](https://nodei.co/npm/catsnake.png?downloads=true&downloadRank=true)](https://npmjs.com/package/catsnake)
+[![](https://nodei.co/npm/pubsub.png?downloads=true&downloadRank=true)](https://npmjs.com/package/pubsub)
 
- [![npm](https://img.shields.io/npm/v/catsnake.svg?style=flat-square)]()
+ [![npm](https://img.shields.io/npm/v/pubsub.svg?style=flat-square)]()
 [![GitHub issues](https://img.shields.io/github/issues/catsnakejs/catsnake-client.svg?style=flat-square)](https://github.com/catsnakejs/catsnake-client/issues)
 [![deps](https://img.shields.io/david/catsnakejs/catsnake-client.svg?style=flat-square)]()
 [![codes style](https://img.shields.io/badge/code%20style-google-brightgreen.svg?style=flat-square)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-# What is CatSnake JS?
+# What is CatSnake?
 
-CatSnake JS is a package built on top of WebSockets to allow for a publish & subscribe style messaging for quickly building fast realtime applications. Catsnake also utilizes
+CatSnake is a package built on top of WebSockets to allow for a publish & subscribe style messaging for quickly building fast realtime applications. Catsnake also utilizes
 [MessagePack](http://msgpack.org) so package sizes are very small making Catsnake very fast.
 
 # Docs
@@ -25,11 +25,18 @@ For quick use you can simply include catsnke in your `<head>`.
 <script type="text/javascript" src="https://cdn.jsdelivr.net/catsnake/0.2.5/catsnake.js"></script>
 ```
 
-If you're using npm you can simply require and create a catsnake client. If you're using Catsnake via an inline script tag, simply omit the `require('catsnake')` line.
-
+For installation with npm just install with
+```bash
+npm i -save pubsub
+```
+and then require it
 ```javascript
-const CatSnake = require('catsnake');
-const cs = new CatSnake('ws://catsnake.io:3081', {
+const PubSub = require('pubsub');
+```
+Now connect to the PubSub server.
+See [pubsub-server](http://npmjs.com/package/pubsub-server) to run your own server, Otherwise you can use the example below to use our free server. (note that channel names may already be reserved, so be creative!)
+```javascript
+const cs = new PubSub('ws://catsnake.io:3081', {
     commonName: 'A Random Catsnake'
 });
 ```

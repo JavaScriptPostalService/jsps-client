@@ -1,6 +1,6 @@
 {
-  "name": "catsnake",
-  "version": "0.2.5",
+  "name": "pubsub",
+  "version": "2.0.0",
   "description": "Super fast, and easy to use; realtime messaging.",
   "main": "build/mod/catsnake.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "realtime"
   ],
   "authors": [
-    "catsnakejs <contact.mattdylan@gmail.com>",
+    "wski <contact.mattdylan@gmail.com>",
     "hoganmaps <chris@hogan.io>"
   ],
   "license": "MIT",
