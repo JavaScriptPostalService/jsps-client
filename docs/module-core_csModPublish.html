@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Global</title>
+	<title>Documentation Module: core/csModPublish</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -31,16 +31,16 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
-				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="CatSnake.html">CatSnake</a></li>
+					<li><a href="module-core_csModPublish.html">core/csModPublish</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
-				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#csModAuthenticate">csModAuthenticate</a></li><li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#subscribe">subscribe</a></li>
+					<li><a href="CatSnake.html">CatSnake</a></li>
 				</ul>
 			</li>
 			
@@ -70,15 +70,10 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Module: core/csModPublish</h1>
 <section>
 
 <header>
-    
-        <h2>
-        
-        </h2>
-        
     
 </header>
 
@@ -86,6 +81,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description">csModPublish module.</div>
         
 
         
@@ -151,7 +148,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="csModAuthenticate"><span class="type-signature"></span>csModAuthenticate(secret)</h4>
+    <h4 class="name" id="~csModAuthenticate"><span class="type-signature">&lt;inner> </span>csModAuthenticate(secret)</h4>
     
     
 </dt>
@@ -279,7 +276,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="deny"><span class="type-signature"></span>deny(channel, client, secret)</h4>
+    <h4 class="name" id="~deny"><span class="type-signature">&lt;inner> </span>deny(channel, client, secret)</h4>
     
     
 </dt>
@@ -455,7 +452,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="grant"><span class="type-signature"></span>grant(channel, client, secret)</h4>
+    <h4 class="name" id="~grant"><span class="type-signature">&lt;inner> </span>grant(channel, client, secret)</h4>
     
     
 </dt>
@@ -631,7 +628,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="history"><span class="type-signature"></span>history(channel, limit, opts)</h4>
+    <h4 class="name" id="~history"><span class="type-signature">&lt;inner> </span>history(channel, limit, opts)</h4>
     
     
 </dt>
@@ -857,7 +854,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="info"><span class="type-signature"></span>info(channel, data, opts)</h4>
+    <h4 class="name" id="~info"><span class="type-signature">&lt;inner> </span>info(channel, data, opts)</h4>
     
     
 </dt>
@@ -1083,183 +1080,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="publish"><span class="type-signature"></span>publish(channel, data, privateKey)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Publishes a message to all subscribers
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the channel to publish to</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the object to publish</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>privateKey</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">optional private key for private channels</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe(channel, callback, opts)</h4>
+    <h4 class="name" id="~subscribe"><span class="type-signature">&lt;inner> </span>subscribe(channel, callback, opts)</h4>
     
     
 </dt>
@@ -1613,7 +1434,7 @@
                 
 <hr>
 <dt>
-    <h4 class="name" id="stringifyinternal"><span class="type-signature"></span>stringify (data)</h4>
+    <h4 class="name" id="~stringifyinternal"><span class="type-signature"></span>stringify (data)</h4>
     
     
 </dt>
@@ -1783,7 +1604,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-04-12T15:30:50-04:00
+		on 2016-04-12T15:33:07-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
