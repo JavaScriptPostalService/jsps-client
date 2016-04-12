@@ -1,6 +1,8 @@
 # How to contribute
 
 For catsnake to keep up to date, and become the best tool it can be; we need contributors like you!
+We know trying to add your own work might be scary, what will people say? Is my code quality good enough? What if I look dumb?
+It's fine! Just go ahead and submit your work, worst case we'll tidy things up a bit; I'm positive we can benifit from seeing your ideas.
 
 ## Getting Started
 

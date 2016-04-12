@@ -3,7 +3,7 @@
  [![npm](https://img.shields.io/npm/v/pubsub.svg?style=flat-square)]()
 [![GitHub issues](https://img.shields.io/github/issues/catsnakejs/catsnake-client.svg?style=flat-square)](https://github.com/catsnakejs/catsnake-client/issues)
 [![deps](https://img.shields.io/david/catsnakejs/catsnake-client.svg?style=flat-square)]()
-[![codes style](https://img.shields.io/badge/code%20style-google-brightgreen.svg?style=flat-square)]()
+[![codes style](https://img.shields.io/badge/code%20style-Airbnb-brightgreen.svg?style=flat-square)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 
@@ -109,3 +109,11 @@ be sure to authenticate with the correct secret.
 ```javascript
 cs.authenticate('mostSecureSecretEver');
 ```
+
+## Contributing
+
+For catsnake to keep up to date, and become the best tool it can be; we need contributors like you!
+We know trying to add your own work might be scary, what will people say? Is my code quality good enough? What if I look dumb?
+It's fine! Just go ahead and submit your work, worst case we'll tidy things up a bit; I'm positive we can benifit from seeing your ideas.
+
+See the [Contributing.md over here](https://github.com/catsnakejs/catsnake-client/blob/master/CONTRIBUTING.md) for a full list of instructions.
