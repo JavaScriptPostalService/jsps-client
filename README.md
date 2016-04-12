@@ -58,7 +58,7 @@ Now that you've subscibed to a channel, let's publish a message to all of the ot
 ```javascript
 cs.publish('General', {
     message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
-});
+}).then(msg => { console.log('Yay, the server got our message.') });
 ```
 
 ### History
