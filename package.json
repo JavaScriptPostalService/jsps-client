@@ -1,6 +1,6 @@
 {
   "name": "pubsub",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Super fast, and easy to use; realtime messaging.",
   "main": "build/mod/catsnake.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "conventional-github-releaser": "^1.1.1",
     "del": "^2.2.0",
     "eslint": "^2.5.1",
+    "eslint-config-airbnb": "^7.0.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
     "eslint-plugin-react": "^4.3.0",
     "gulp": "^3.9.1",
@@ -57,7 +58,6 @@
     "run-sequence": "^1.1.5"
   },
   "dependencies": {
-    "eslint-config-airbnb": "^7.0.0",
     "msgpack-lite": "^0.1.17"
   }
 }
