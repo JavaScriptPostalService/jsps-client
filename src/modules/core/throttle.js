@@ -1,5 +1,4 @@
-'use strict';
-import {catsnakeConfig} from '../../config';
+import { catsnakeConfig } from '../../config';
 
 /**
  * csModThrottle module.
@@ -8,8 +7,8 @@ import {catsnakeConfig} from '../../config';
  * @param {object} callback - returns data, if acceptable.
 */
 
-let requests = [];
-let queue = [];
+const requests = [];
+const queue = [];
 
 // Only allow 100 messages per second.
 setInterval(() => {

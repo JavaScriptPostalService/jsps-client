@@ -18,8 +18,8 @@ export const csModDeny = (channel, client, secret, _this) => {
         time: Date.now(),
         client: _this.client,
         commonName: _this.commonName,
-        type: 'deny'
-      }
+        type: 'deny',
+      },
     }, payload => {
       // Send off the payload to the frontend that will attempt to deny a client
       _this.socket.send(payload);

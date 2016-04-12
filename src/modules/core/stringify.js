@@ -1,8 +1,7 @@
-'use strict';
-
 // TODO: we should probably add webpack soon.
 import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
-import {csModThrottle} from './throttle';
+import { csModThrottle } from './throttle';
+
 /**
  * csModStringify module.
  * @module core/csModStringify

@@ -18,8 +18,8 @@ export const csModPublish = (channel, data, privateKey, _this) => {
         time: Date.now(),
         client: _this.client,
         commonName: _this.commonName,
-        type: 'publish'
-      }
+        type: 'publish',
+      },
     }, payload => {
       // Send off the payload to the server signifiying we're using a standard publish method.
       _this.socket.send(payload);

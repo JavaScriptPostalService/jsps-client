@@ -14,8 +14,8 @@ export const csModAuthenticate = (secret, _this) => {
         client: _this.client,
         commonName: _this.commonName,
         type: 'authenticate',
-        secret
-      }
+        secret,
+      },
     }, payload => {
       // Send off the payload to the frontend that will attempt to deny a client
       _this.socket.send(payload);

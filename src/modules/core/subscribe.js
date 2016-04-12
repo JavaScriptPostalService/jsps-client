@@ -1,5 +1,3 @@
-'use strict';
-
 // TODO: we should probably add webpack soon.
 import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
 
@@ -15,9 +13,9 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
   // Since options are optional, if there are no options passed, we'll drop in
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
-  let options = (opts) ? opts : {};
+  const options = opts || {};
 
-  let privateKey = (options.privateKey) ? options.privateKey : false;
+  const privateKey = options.privateKey || false;
 
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
@@ -31,15 +29,15 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
         time: Date.now(),
         client: _this.client,
         commonName: _this.commonName,
-        type: 'subscribe'
-      }
+        type: 'subscribe',
+      },
     }, payload => {
       // Send off the payload to the server letting it know we're subscribing to a channel
       _this.socket.send(payload);
 
       // Whenever the server has new info it will tell us here.
       _this.socket.onmessage = function(msg) {
-        let decodedMsg = msgpack.decode(
+        const decodedMsg = msgpack.decode(
           new Uint8Array(msg.data)
         );
         if (decodedMsg.channel === channel) {
@@ -56,10 +54,10 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
             time: Date.now(),
             client: _this.client,
             commonName: _this.commonName,
-            type: 'unsubscribe'
-          }
-        }, payload => {
-          _this.socket.send(payload);
+            type: 'unsubscribe',
+          },
+        }, pl => {
+          _this.socket.send(pl);
         });
       };
     });
