@@ -1,5 +1,6 @@
 'use strict';
 import {catsnakeConfig} from './config';
+import msgpack from '../node_modules/msgpack-lite/dist/msgpack.min.js';
 
 import {
   csModClientid,
@@ -54,6 +55,22 @@ class CatSnake {
         this.socket.close();
       };
     };
+
+    this.listeners = [];
+
+    this.socket.onmessage = msg => {
+      const decodedMsg = msgpack.decode(
+        new Uint8Array(msg.data)
+      );
+
+      this.listeners.map(l => {
+        l(decodedMsg);
+      });
+    };
+  }
+
+  awaitMessage(listener) {
+    this.listeners.push(listener);
   }
 
   stringify(data, callback) {
@@ -74,7 +91,7 @@ class CatSnake {
    * @param {string} privateKey - optional private key for private channels
   */
   publish(channel, data, privateKey) {
-    csModPublish(channel, data, privateKey, this);
+    return csModPublish(channel, data, privateKey, this);
   }
 
   /**

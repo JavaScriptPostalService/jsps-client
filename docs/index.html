@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#subscribe">subscribe</a></li>
+					<li><a href="global.html#csModAuthenticate">csModAuthenticate</a></li><li><a href="global.html#deny">deny</a></li><li><a href="global.html#grant">grant</a></li><li><a href="global.html#history">history</a></li><li><a href="global.html#info">info</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#subscribe">subscribe</a></li>
 				</ul>
 			</li>
 			
@@ -91,37 +91,42 @@
 
 
     <section class="readme-section">
-        <article><h1>CatSnake JS</h1><p>CatSnake JS - Open source, free to use persistant pubsub for building realtime applications.</p>
-<h2>What is CatSnake JS?</h2><p>CatSnake JS is a PubSub solution that allows realtime communications between clients and
-devices. With CatSnake you can simply subscribe a device to a channel and any time
-a JavaScript object is published to that channel your device or client will be notified.</p>
-<p>The best part is Catsnake is built using WebSockets and
-<a href="http://msgpack.org">MessagePack</a> so it's incredibly fast.</p>
-<h2>Something worth noting</h2><p>Catsnake will soon feature pluggable modules for things like Mapping, IOT and more.
-In addition we will have libraries for Python and Java, as well as native implementations for mobile development. Stay tuned :)</p>
-<h2>Docs</h2><p>For detailed documentation <a href="https://rawgit.com/catsnakejs/catsnake-client/master/docs/global.html">visit this link.</a></p>
-<h2>Quickstart Guide</h2><h3>Setup</h3><p>If you're using npm you can simply require and create a catsnake client.</p>
-<pre class="prettyprint source lang-javascript"><code>const catsnake = require('catsnake');
-const CatSnake = new catsnake('ws://catsnake.io:3081', {
+        <article><p><img src="https://avatars1.githubusercontent.com/u/18083257?v=3&amp;s=100" alt="Logo"></p>
+<p> <a href=""><img src="https://img.shields.io/npm/v/pubsub.svg?style=flat-square" alt="npm"></a>
+<a href="https://github.com/catsnakejs/catsnake-client/issues"><img src="https://img.shields.io/github/issues/catsnakejs/catsnake-client.svg?style=flat-square" alt="GitHub issues"></a>
+<a href=""><img src="https://img.shields.io/david/catsnakejs/catsnake-client.svg?style=flat-square" alt="deps"></a>
+<a href=""><img src="https://img.shields.io/badge/code%20style-Airbnb-brightgreen.svg?style=flat-square" alt="codes style"></a>
+<a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></a></p>
+<h1>What is CatSnake?</h1><p>CatSnake is a package built on top of WebSockets to allow for a publish &amp; subscribe style messaging for quickly building fast realtime applications. Catsnake also utilizes
+<a href="http://msgpack.org">MessagePack</a> so package sizes are very small making Catsnake very fast.</p>
+<h1>Docs</h1><p>For detailed documentation <a href="https://rawgit.com/catsnakejs/catsnake-client/master/docs/global.html">visit this link.</a></p>
+<h1>Quickstart Guide</h1><h2>Install</h2><p><a href="https://npmjs.com/package/pubsub"><img src="https://nodei.co/npm/pubsub.png?downloads=true&amp;downloadRank=true" alt=""></a></p>
+<p>For quick use you can simply include catsnke in your <code>&lt;head&gt;</code>.</p>
+<pre class="prettyprint source lang-html"><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/catsnake/0.2.5/catsnake.js&quot;>&lt;/script></code></pre><p>For installation with npm just install with</p>
+<pre class="prettyprint source lang-bash"><code>npm i -save pubsub</code></pre><p>and then require it</p>
+<pre class="prettyprint source lang-javascript"><code>const PubSub = require('pubsub');</code></pre><p>Now connect to the PubSub server.
+See <a href="http://npmjs.com/package/pubsub-server">pubsub-server</a> to run your own server, Otherwise you can use the example below to use our free server. (note that channel names may already be reserved, so be creative!)</p>
+<pre class="prettyprint source lang-javascript"><code>const cs = new PubSub('ws://catsnake.io:3081', {
     commonName: 'A Random Catsnake'
-});</code></pre><p>If you're using this without a module builder just go ahead and use the following without the require. CatSnake will
-already be defined.</p>
-<h3>Subscribe</h3><p>Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.subscribe('General', msg => console.log(msg));</code></pre><h3>Publish</h3><p>Now that you've subscibed to a channel, let's publish a message to all of the other subscribers, and ourselves ofcourse.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.publish('General', msg => {
+});</code></pre><h2>Methods</h2><h3>Subscribe</h3><p>Before you can start sending messages, you should subscribe to a channel (but you don't have to). Don't worry, it's super easy.</p>
+<pre class="prettyprint source lang-javascript"><code>cs.subscribe('General', data => console.log(data));</code></pre><h3>Publish</h3><p>Now that you've subscibed to a channel, let's publish a message to all of the other subscribers, and ourselves ofcourse.</p>
+<pre class="prettyprint source lang-javascript"><code>cs.publish('General', {
     message: 'Ahh! Your dog is attacking me! What is it with mail men and dogs anyways?'
-});</code></pre><h3>Access Control</h3><p>Catsnake gives you multiple options for access control to a channel. We'll talk
-about denying access to a channel as well as granting access.</p>
+});</code></pre><h3>History</h3><p>Wanna fetch some history? Easy.</p>
+<pre class="prettyprint source lang-javascript"><code>cs.history('General', limit);</code></pre><p>History will be sent back in the subscribe method with the <code>metadata.type</code> of 'history'.</p>
+<h3>Info</h3><p>Nice, now let's get info from the channel, this will return information like connected clients, author, etc.</p>
+<pre class="prettyprint source lang-javascript"><code>cs.info('General');</code></pre><h3>Access Control</h3><p>Catsnake gives you multiple options for access control to a channel.</p>
 <p>Denying a client access to a channel protected by access control is easy</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.deny('General', 'client-123215', 'secretKey');</code></pre><p>Granting a client access to a channel protected by access control is just as simple.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.grant('General', 'client-123215', 'secretKey');</code></pre><h3>Info</h3><p>Nice, now let's get info from the channel, this will return information like connected clients, author, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.info('General');</code></pre><h3>Unsubscribe</h3><p>Well that was easy. Let's go over one last thing, before we get into the more advanced features of jsps.
-Once you're done pubsubbing you can unsubscribe from the channel. This will leave your client in an offline state but
-you can later reconnect with the same client id via the subscribe method, we will go over this more in the advanced
+<pre class="prettyprint source lang-javascript"><code>cs.deny('General', 'client-123215', 'secretKey');</code></pre><p>Granting a client access to a channel protected by access control is just as simple.</p>
+<pre class="prettyprint source lang-javascript"><code>cs.grant('General', 'client-123215', 'secretKey');</code></pre><h3>Unsubscribe</h3><p>Before exiting your application you should unsubscribe from the channel. This will leave your client in an offline state but
+you can later reconnect with the same client id via the <code>new Catsnake</code> method, we will go over this more in the advanced
 features below.</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.unsubscribe('General');</code></pre><h3>History</h3><p>Wanna get some history? Just put the channel, the limit, and a privateKey if the channel is private.
-History will be sent back in the subscriber function, you can check the metadata.type for the type of 'history'</p>
-<pre class="prettyprint source lang-javascript"><code>CatSnake.history('General', limit);</code></pre></article>
+<pre class="prettyprint source lang-javascript"><code>cs.unsubscribe('General');</code></pre><h3>Private Servers</h3><p>In the event that you are trying to access a private server, after connecting to the server
+be sure to authenticate with the correct secret.</p>
+<pre class="prettyprint source lang-javascript"><code>cs.authenticate('mostSecureSecretEver');</code></pre><h2>Contributing</h2><p>For catsnake to keep up to date, and become the best tool it can be; we need contributors like you!
+We know trying to add your own work might be scary, what will people say? Is my code quality good enough? What if I look dumb?
+It's fine! Just go ahead and submit your work, worst case we'll tidy things up a bit; I'm positive we can benifit from seeing your ideas.</p>
+<p>See the <a href="https://github.com/catsnakejs/catsnake-client/blob/master/CONTRIBUTING.md">Contributing.md over here</a> for a full list of instructions.</p></article>
     </section>
 
 
@@ -165,7 +170,7 @@ History will be sent back in the subscriber function, you can check the metadata
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-04-08T15:35:39-04:00
+		on 2016-04-12T15:23:59-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

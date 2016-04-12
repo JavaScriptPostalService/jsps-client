@@ -1,6 +1,3 @@
-// TODO: we should probably add webpack soon.
-import msgpack from '../../../node_modules/msgpack-lite/dist/msgpack.min.js';
-
 /**
  * csModSubscribe module.
  * @module core/csModSubscribe
@@ -36,14 +33,11 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
       _this.socket.send(payload);
 
       // Whenever the server has new info it will tell us here.
-      _this.socket.onmessage = function(msg) {
-        const decodedMsg = msgpack.decode(
-          new Uint8Array(msg.data)
-        );
-        if (decodedMsg.channel === channel) {
-          callback(decodedMsg);
+      _this.awaitMessage(msg => {
+        if (msg.channel === channel) {
+          callback(msg);
         }
-      };
+      });
 
       // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
       window.onbeforeunload = () => {

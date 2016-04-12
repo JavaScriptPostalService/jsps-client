@@ -46,26 +46,6 @@ var catsnakeConfig = {
   requestsPerSecond: 15
 };
 
-/**
- * csModClientid module.
- * @module core/csModClientid
- * @return {string} - Returns a new random, unique clientid
- */
-
-// This function simply generates a random time based client token.
-// Clients will use this token to authenticate themselves, so this should be
-// saved in the application if you plan to resubscribe to channels after reloading
-// the catsnake client
-var csModClientid = function csModClientid() {
-  var d = new Date().getTime();
-  var uuid = 'client-xxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    return (c === 'x' ? r : r & 0x3 | 0x8).toString(16);
-  });
-  return uuid;
-};
-
 var msgpack_min = __commonjs(function (module, exports, global) {
 !function (t) {
   if ("object" == (typeof exports === "undefined" ? "undefined" : babelHelpers.typeof(exports)) && "undefined" != typeof module) module.exports = t();else if ("function" == typeof define && define.amd) define([], t);else {
@@ -932,6 +912,26 @@ var msgpack_min = __commonjs(function (module, exports, global) {
 var msgpack = (msgpack_min && typeof msgpack_min === 'object' && 'default' in msgpack_min ? msgpack_min['default'] : msgpack_min);
 
 /**
+ * csModClientid module.
+ * @module core/csModClientid
+ * @return {string} - Returns a new random, unique clientid
+ */
+
+// This function simply generates a random time based client token.
+// Clients will use this token to authenticate themselves, so this should be
+// saved in the application if you plan to resubscribe to channels after reloading
+// the catsnake client
+var csModClientid = function csModClientid() {
+  var d = new Date().getTime();
+  var uuid = 'client-xxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === 'x' ? r : r & 0x3 | 0x8).toString(16);
+  });
+  return uuid;
+};
+
+/**
  * csModThrottle module.
  * @module core/csModThrottle
  * @param {object} data - the object to attempt to send
@@ -986,6 +986,22 @@ var csModStringify = function csModStringify(data, callback, _this) {
 };
 
 /**
+ * csModUUID module.
+ * @module core/csModUUID
+ * @return {string} - Returns a new random, unique uuid
+ */
+
+var csModUUID = function csModUUID() {
+  var d = new Date().getTime();
+  var uuid = 'xxxx-xxxx-xxxx-xxxx-xxxx'.replace(/[xy]/g, function (c) {
+    var r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === 'x' ? r : r & 0x3 | 0x8).toString(16);
+  });
+  return uuid;
+};
+
+/**
  * csModPublish module.
  * @module core/csModPublish
  * @param {string} channel - the channel to publish to
@@ -994,31 +1010,44 @@ var csModStringify = function csModStringify(data, callback, _this) {
  * @param {this} _this - this inheratance
 */
 var csModPublish = function csModPublish(channel, data, privateKey, _this) {
-  // If we're connected, let's go ahead and publish our payload.
-  if (_this.connected) {
-    // Safely stringify our data before sending it to the server.
-    _this.stringify({
-      channel: channel,
-      privateKey: privateKey,
-      payload: data,
-      metadata: {
-        time: Date.now(),
-        client: _this.client,
-        commonName: _this.commonName,
-        type: 'publish'
-      }
-    }, function (payload) {
-      // Send off the payload to the server signifiying we're using a standard publish method.
-      _this.socket.send(payload);
-    });
-  } else {
-    // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.publish(channel, data, privateKey);
-    }, 500);
-  }
+  return new Promise(function (resolve) {
+    var uuid = csModUUID();
+    // If we're connected, let's go ahead and publish our payload.
+    if (_this.connected) {
+      // Safely stringify our data before sending it to the server.
+      _this.stringify({
+        channel: channel,
+        privateKey: privateKey,
+        payload: data,
+        metadata: {
+          time: Date.now(),
+          client: _this.client,
+          commonName: _this.commonName,
+          id: uuid,
+          type: 'publish'
+        }
+      }, function (payload) {
+        // Send off the payload to the server signifiying we're using a standard publish method.
+        _this.socket.send(payload);
+
+        // Wait for success message to come back from server
+        _this.awaitMessage(function (msg) {
+          if (msg.helper) {
+            if (msg.metadata.id === uuid) {
+              resolve(msg);
+            }
+          }
+        });
+      });
+    } else {
+      // Crap, Something is wrong and we're not connected yet, let's try again later.
+      console.warn('Failed to connect, attempting again in 1 second.');
+      setTimeout(function () {
+        // call self with the same params that were initially passed.
+        _this.publish(channel, data, privateKey);
+      }, 500);
+    }
+  });
 };
 
 /**
@@ -1033,7 +1062,7 @@ var csModInfo = function csModInfo(channel, data, opts, _this) {
   // Since options are optional, if there are no options passed, we'll drop in
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
-  var options = opts ? opts : {};
+  var options = opts || {};
   var privateKey = options.privateKey ? options.privateKey : false;
 
   // If we're connected, let's go ahead and publish our payload.
@@ -1075,9 +1104,9 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
   // Since options are optional, if there are no options passed, we'll drop in
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
-  var options = opts ? opts : {};
+  var options = opts || {};
 
-  var privateKey = options.privateKey ? options.privateKey : false;
+  var privateKey = options.privateKey || false;
 
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
@@ -1098,12 +1127,11 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
       _this.socket.send(payload);
 
       // Whenever the server has new info it will tell us here.
-      _this.socket.onmessage = function (msg) {
-        var decodedMsg = msgpack.decode(new Uint8Array(msg.data));
-        if (decodedMsg.channel === channel) {
-          callback(decodedMsg);
+      _this.awaitMessage(function (msg) {
+        if (msg.channel === channel) {
+          callback(msg);
         }
-      };
+      });
 
       // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
       window.onbeforeunload = function () {
@@ -1116,8 +1144,8 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
             commonName: _this.commonName,
             type: 'unsubscribe'
           }
-        }, function (payload) {
-          _this.socket.send(payload);
+        }, function (pl) {
+          _this.socket.send(pl);
         });
       };
     });
@@ -1247,8 +1275,8 @@ var csModHistory = function csModHistory(channel, limit, opts, _this) {
   // Since options are optional, if there are no options passed, we'll drop in
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
-  var options = opts ? opts : {};
-  var privateKey = options.privateKey ? options.privateKey : false;
+  var options = opts || {};
+  var privateKey = options.privateKey || false;
 
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
@@ -1318,9 +1346,24 @@ var CatSnake = function () {
         _this.socket.close();
       };
     };
+
+    this.listeners = [];
+
+    this.socket.onmessage = function (msg) {
+      var decodedMsg = msgpack.decode(new Uint8Array(msg.data));
+
+      _this.listeners.map(function (l) {
+        l(decodedMsg);
+      });
+    };
   }
 
   babelHelpers.createClass(CatSnake, [{
+    key: 'awaitMessage',
+    value: function awaitMessage(listener) {
+      this.listeners.push(listener);
+    }
+  }, {
     key: 'stringify',
     value: function stringify(data, callback) {
       /**
@@ -1343,7 +1386,7 @@ var CatSnake = function () {
   }, {
     key: 'publish',
     value: function publish(channel, data, privateKey) {
-      csModPublish(channel, data, privateKey, this);
+      return csModPublish(channel, data, privateKey, this);
     }
 
     /**
@@ -1437,3 +1480,23 @@ var CatSnake = function () {
   }]);
   return CatSnake;
 }();
+/*
+        ___
+    . -^   `--,
+   /# =========`-_
+  /# (--====___====\
+ /#   .- --.  . --.|
+/##   |  * ) (   * ),
+|##   \    /\ \   / |
+|###   ---   \ ---  |
+|####      ___)    #|
+|######           ##|
+ \##### ---------- /   SHOW US WHAT YOU GOT!!!
+  \####           (  Submit a pull request and make Catsnake better.
+   `\###          |
+     \###         |
+      \##        |
+       \###.    .)
+        `======/
+
+*/
