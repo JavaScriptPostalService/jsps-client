@@ -1034,10 +1034,8 @@
 
           // Wait for success message to come back from server
           _this.awaitMessage(function (msg) {
-            if (msg.helper) {
-              if (msg.metadata.id === uuid) {
-                resolve(msg);
-              }
+            if (msg.metadata.id === uuid) {
+              resolve(msg);
             }
           });
         });
@@ -1378,11 +1376,12 @@
       }
 
       /**
-       * Publishes a message to all subscribers
-       * @function publish
+       * csModPublish module.
+       * @module core/csModPublish
        * @param {string} channel - the channel to publish to
        * @param {object} data - the object to publish
        * @param {string} privateKey - optional private key for private channels
+       * @returns {promise} - returns new promise, resolved when server gets message
       */
 
     }, {

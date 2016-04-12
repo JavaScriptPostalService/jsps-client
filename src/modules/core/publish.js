@@ -32,10 +32,8 @@ export const csModPublish = (channel, data, privateKey, _this) =>
 
         // Wait for success message to come back from server
         _this.awaitMessage(msg => {
-          if (msg.helper) {
-            if (msg.metadata.id === uuid) {
-              resolve(msg);
-            }
+          if (msg.metadata.id === uuid) {
+            resolve(msg);
           }
         });
       });
