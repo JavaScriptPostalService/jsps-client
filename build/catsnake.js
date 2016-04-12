@@ -1132,6 +1132,42 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
 };
 
 /**
+ * Grant a client access to a channel
+ * @function csModGrant
+ * @param {string} channel - the channel in which to grant the client access to
+ * @param {string} client - the client to grant access
+ * @param {string} secret - the secret key associated with this channel
+ * @param {this} _this - this inheratance
+*/
+var csModGrant = function csModGrant(channel, client, secret, _this) {
+  // If we're connected, let's go ahead and publish our payload.
+  if (_this.connected) {
+    // Safely stringify our data before sending it to the server.
+    _this.stringify({
+      channel: channel,
+      client: client,
+      secret: secret,
+      metadata: {
+        time: Date.now(),
+        client: _this.client,
+        commonName: _this.commonName,
+        type: 'grant'
+      }
+    }, function (payload) {
+      // Send off the payload to the frontend that will attempt to deny a client
+      _this.socket.send(payload);
+    });
+  } else {
+    // Something is wrong and we're not connected yet, let's try again later.
+    console.warn('Failed to connect, attempting again in 1 second.');
+    setTimeout(function () {
+      // call self with the same params that were initially passed.
+      _this.grant(channel, client, secret);
+    }, 500);
+  }
+};
+
+/**
  * Deny a client access to a channel
  * @function csModDeny
  * @param {string} channel - the channel in which to deny the client from
@@ -1162,7 +1198,39 @@ var csModDeny = function csModDeny(channel, client, secret, _this) {
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
       // call self with the same params that were initially passed.
-      _this.info(channel, data, opts);
+      _this.deny(channel, client, secret);
+    }, 500);
+  }
+};
+
+/**
+ * Grant a client access to a private server
+ * @function csModAuthenticate
+ * @param {string} secret - the secret key for the private server
+ * @param {this} _this - this inheratance
+*/
+var csModAuthenticate = function csModAuthenticate(secret, _this) {
+  // If we're connected, let's go ahead and publish our payload.
+  if (_this.connected) {
+    // Safely stringify our data before sending it to the server.
+    _this.stringify({
+      metadata: {
+        time: Date.now(),
+        client: _this.client,
+        commonName: _this.commonName,
+        type: 'authenticate',
+        secret: secret
+      }
+    }, function (payload) {
+      // Send off the payload to the frontend that will attempt to deny a client
+      _this.socket.send(payload);
+    });
+  } else {
+    // Something is wrong and we're not connected yet, let's try again later.
+    console.warn('Failed to connect, attempting again in 1 second.');
+    setTimeout(function () {
+      // call self with the same params that were initially passed.
+      _this.authenticate(secret);
     }, 500);
   }
 };
@@ -1221,6 +1289,7 @@ var CatSnake = function () {
    * @param {object} options - options such as common name and others
    * @param {string} options.commonName - common name of your client
    * @param {boolean} options.bypassThrottle - bypass client side throttling, this does not prevent serverside throttling
+   * @param {string} options.clientId - reconnect with an old clientId
    */
 
   function CatSnake(address, options) {
@@ -1234,7 +1303,7 @@ var CatSnake = function () {
     this.connected = false;
 
     // Genrate a unique clientid
-    this.client = csModClientid();
+    this.client = options.clientId ? options.clientId : csModClientid();
 
     this.commonName = options.commonName ? options.commonName : config.defaultName;
 
@@ -1351,7 +1420,19 @@ var CatSnake = function () {
   }, {
     key: 'grant',
     value: function grant(channel, client, secret) {
-      return cdModGrant(channel, client, secret, this);
+      return csModGrant(channel, client, secret, this);
+    }
+
+    /**
+     * Grant a client access to a private server
+     * @function csModAuthenticate
+     * @param {string} secret - the secret key for the private server
+    */
+
+  }, {
+    key: 'authenticate',
+    value: function authenticate(secret) {
+      return csModAuthenticate(secret, this);
     }
   }]);
   return CatSnake;

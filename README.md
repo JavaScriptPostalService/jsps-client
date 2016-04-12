@@ -101,3 +101,11 @@ features below.
 ```javascript
 cs.unsubscribe('General');
 ```
+
+### Private Servers
+In the event that you are trying to access a private server, after connecting to the server
+be sure to authenticate with the correct secret.
+
+```javascript
+cs.authenticate('mostSecureSecretEver');
+```

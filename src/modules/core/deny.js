@@ -29,7 +29,7 @@ export const csModDeny = (channel, client, secret, _this) => {
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       // call self with the same params that were initially passed.
-      _this.info(channel, data, opts);
+      _this.deny(channel, client, secret);
     }, 500);
   }
 };

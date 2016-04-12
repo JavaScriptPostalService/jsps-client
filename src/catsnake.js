@@ -8,7 +8,8 @@ import {
   csModInfo,
   csModSubscribe,
   csModGrant,
-  csModDeny
+  csModDeny,
+  csModAuthenticate
 } from './modules/core/index';
 
 import {
@@ -135,6 +136,15 @@ class CatSnake {
    * @param {string} secret - the secret key associated with this channel
   */
   grant(channel, client, secret) {
-    return cdModGrant(channel, client, secret, this);
+    return csModGrant(channel, client, secret, this);
+  }
+
+  /**
+   * Grant a client access to a private server
+   * @function csModAuthenticate
+   * @param {string} secret - the secret key for the private server
+  */
+  authenticate(secret) {
+    return csModAuthenticate(secret, this);
   }
 }
