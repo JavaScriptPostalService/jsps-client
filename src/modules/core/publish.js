@@ -7,9 +7,10 @@ import { csModUUID } from '../utils';
  * @param {object} data - the object to publish
  * @param {string} privateKey - optional private key for private channels
  * @param {this} _this - this inheratance
+ * @returns {promise} - returns new promise, resolved when server gets message
 */
-export const csModPublish = (channel, data, privateKey, _this) => {
-  return new Promise(resolve => {
+export const csModPublish = (channel, data, privateKey, _this) =>
+  new Promise(resolve => {
     const uuid = csModUUID();
     // If we're connected, let's go ahead and publish our payload.
     if (_this.connected) {
@@ -47,4 +48,3 @@ export const csModPublish = (channel, data, privateKey, _this) => {
       }, 500);
     }
   });
-};

@@ -1008,6 +1008,7 @@ var csModUUID = function csModUUID() {
  * @param {object} data - the object to publish
  * @param {string} privateKey - optional private key for private channels
  * @param {this} _this - this inheratance
+ * @returns {promise} - returns new promise, resolved when server gets message
 */
 var csModPublish = function csModPublish(channel, data, privateKey, _this) {
   return new Promise(function (resolve) {
