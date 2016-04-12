@@ -148,3 +148,24 @@ class CatSnake {
     return csModAuthenticate(secret, this);
   }
 }
+
+/* 
+        ___          
+    . -^   `--,      
+   /# =========`-_   
+  /# (--====___====\ 
+ /#   .- --.  . --.| 
+/##   |  * ) (   * ),
+|##   \    /\ \   / |
+|###   ---   \ ---  |
+|####      ___)    #|
+|######           ##|
+ \##### ---------- /   SHOW US WHAT YOU GOT!!!
+  \####           (  Submit a pull request and make Catsnake better.
+   `\###          |  
+     \###         |  
+      \##        |   
+       \###.    .)   
+        `======/     
+        
+*/
