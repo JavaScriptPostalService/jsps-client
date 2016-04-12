@@ -109,5 +109,3 @@ be sure to authenticate with the correct secret.
 ```javascript
 cs.authenticate('mostSecureSecretEver');
 ```
-### WUBA LUBA PUBSUB!
-![WUBALUBAPUBSUB](http://i.imgur.com/JRqy4AM.jpg)
