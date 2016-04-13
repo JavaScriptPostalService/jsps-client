@@ -1,21 +1,23 @@
-'use strict';
-import {catsnakeConfig} from './config';
+import { catsnakeConfig } from './config';
 import msgpack from '../node_modules/msgpack-lite/dist/msgpack.min.js';
 
 import {
   csModClientid,
-  csModStringify,
+  csModEncode,
   csModPublish,
   csModInfo,
   csModSubscribe,
   csModGrant,
   csModDeny,
-  csModAuthenticate
+  csModAuthenticate,
 } from './modules/core/index';
 
 import {
-  csModHistory
+  csModHistory,
 } from './modules/persistance/index';
+
+const _encode = Symbol('encode');
+const _awaitMessage = Symbol('awaitMessage');
 
 /**
  * Creates a new CatSnake client.
@@ -31,56 +33,55 @@ class CatSnake {
    * @param {string} options.clientId - reconnect with an old clientId
    */
   constructor(address, options) {
+    this.symbols = {
+      _encode,
+      _awaitMessage,
+    };
+
     this.socket = new WebSocket(address);
     this.socket.binaryType = 'arraybuffer';
 
     this.connected = false;
-
-    // Genrate a unique clientid
-    this.client = (options.clientId) ?
-      options.clientId : csModClientid();
-
-    this.commonName = (options.commonName) ?
-      options.commonName : config.defaultName;
-
-    this.bypassThrottle = (options.bypassThrottle) ?
-      options.bypassThrottle : false;
+    this.client = options.clientId || csModClientid();
+    this.commonName = options.commonName || catsnakeConfig.defaultName;
+    this.bypassThrottle = options.bypassThrottle || false;
+    this.listeners = [];
 
     // Fired when the connection is made to the server
-    this.socket.onopen = event => {
+    this.socket.onopen = () => {
       this.connected = true;
-
       // Make sure we tell the server we're leaving.
       window.onbeforeunload = () => {
         this.socket.close();
       };
     };
 
-    this.listeners = [];
-
     this.socket.onmessage = msg => {
       const decodedMsg = msgpack.decode(
         new Uint8Array(msg.data)
       );
 
-      this.listeners.map(l => {
-        l(decodedMsg);
-      });
+      this.listeners.map(l => l(decodedMsg));
     };
   }
 
-  awaitMessage(listener) {
+  /**
+   * Add function as a listener that will be called whenever a message comes in.
+   * @function _awaitMessage (internal/private)
+   * @param {function} listener - the function to execute when a message comes in.
+  */
+  [_awaitMessage](listener) {
     this.listeners.push(listener);
   }
 
-  stringify(data, callback) {
-    /**
-     * Tries to return a stringified object.
-     * @function stringify (internal)
-     * @param {object} data - the object to attempt to stringify
-     * @callback {string} - Returns a stringified object
-    */
-    return csModStringify(data, callback, this);
+  /**
+   * Tries to return a binary blob.
+   * @function _encode (internal)
+   * @param {object} data - the object to attempt to encode
+   * @callback {string} - Returns an encoded blob
+  */
+  [_encode](data, callback) {
+    return csModEncode(data, callback, this);
   }
 
   /**

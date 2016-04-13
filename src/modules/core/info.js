@@ -11,12 +11,12 @@ export const csModInfo = (channel, data, opts, _this) => {
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
   const options = opts || {};
-  const privateKey = (options.privateKey) ? options.privateKey : false;
+  const privateKey = options.privateKey || false;
 
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel,
       privateKey,
       payload: data,
@@ -38,4 +38,6 @@ export const csModInfo = (channel, data, opts, _this) => {
       _this.info(channel, data, opts);
     }, 500);
   }
+
+  return _this;
 };

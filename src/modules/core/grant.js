@@ -10,7 +10,7 @@ export const csModGrant = (channel, client, secret, _this) => {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel,
       client,
       secret,
@@ -32,4 +32,6 @@ export const csModGrant = (channel, client, secret, _this) => {
       _this.grant(channel, client, secret);
     }, 500);
   }
+
+  return _this;
 };

@@ -970,15 +970,12 @@ var csModThrottle = function csModThrottle(data, callback, _this) {
 };
 
 /**
- * csModStringify module.
- * @module core/csModStringify
- * @param {object} data - the object to attempt to stringify
+ * csModEncode module.
+ * @module core/csModEncode
+ * @param {object} data - the object to attempt to encode
  * @callback {function} callback - Returns a stringified object
 */
-
-// A dead simple try catch for stringifying objects. In the future we'd like this
-// to somehow minify the string and make for a smaller payload
-var csModStringify = function csModStringify(data, callback, _this) {
+var csModEncode = function csModEncode(data, callback, _this) {
   // Client side packet throttling, enforces serverside as well.
   csModThrottle(data, function (throttledData) {
     callback(msgpack.encode(throttledData));
@@ -1016,7 +1013,7 @@ var csModPublish = function csModPublish(channel, data, privateKey, _this) {
     // If we're connected, let's go ahead and publish our payload.
     if (_this.connected) {
       // Safely stringify our data before sending it to the server.
-      _this.stringify({
+      _this[_this.symbols._encode]({
         channel: channel,
         privateKey: privateKey,
         payload: data,
@@ -1032,7 +1029,7 @@ var csModPublish = function csModPublish(channel, data, privateKey, _this) {
         _this.socket.send(payload);
 
         // Wait for success message to come back from server
-        _this.awaitMessage(function (msg) {
+        _this[_this.symbols._awaitMessage](function (msg) {
           if (msg.metadata.id === uuid) {
             resolve(msg);
           }
@@ -1062,12 +1059,12 @@ var csModInfo = function csModInfo(channel, data, opts, _this) {
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
   var options = opts || {};
-  var privateKey = options.privateKey ? options.privateKey : false;
+  var privateKey = options.privateKey || false;
 
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel: channel,
       privateKey: privateKey,
       payload: data,
@@ -1089,6 +1086,8 @@ var csModInfo = function csModInfo(channel, data, opts, _this) {
       _this.info(channel, data, opts);
     }, 500);
   }
+
+  return _this;
 };
 
 /**
@@ -1104,12 +1103,11 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
   var options = opts || {};
-
   var privateKey = options.privateKey || false;
 
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel: channel,
       privateKey: privateKey,
       noself: options.noself ? options.noself : false,
@@ -1126,7 +1124,7 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
       _this.socket.send(payload);
 
       // Whenever the server has new info it will tell us here.
-      _this.awaitMessage(function (msg) {
+      _this[_this.symbols._awaitMessage](function (msg) {
         if (msg.channel === channel) {
           callback(msg);
         }
@@ -1134,7 +1132,7 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
 
       // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
       window.onbeforeunload = function () {
-        _this.stringify({
+        _this[_this.symbols.encode]({
           channel: channel,
           privateKey: privateKey,
           metadata: {
@@ -1156,6 +1154,8 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts, _this) {
       _this.subscribe(channel, callback, opts);
     }, 500);
   }
+
+  return _this;
 };
 
 /**
@@ -1170,7 +1170,7 @@ var csModGrant = function csModGrant(channel, client, secret, _this) {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel: channel,
       client: client,
       secret: secret,
@@ -1192,6 +1192,8 @@ var csModGrant = function csModGrant(channel, client, secret, _this) {
       _this.grant(channel, client, secret);
     }, 500);
   }
+
+  return _this;
 };
 
 /**
@@ -1206,7 +1208,7 @@ var csModDeny = function csModDeny(channel, client, secret, _this) {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel: channel,
       client: client,
       secret: secret,
@@ -1228,6 +1230,8 @@ var csModDeny = function csModDeny(channel, client, secret, _this) {
       _this.deny(channel, client, secret);
     }, 500);
   }
+
+  return _this;
 };
 
 /**
@@ -1240,7 +1244,7 @@ var csModAuthenticate = function csModAuthenticate(secret, _this) {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       metadata: {
         time: Date.now(),
         client: _this.client,
@@ -1260,6 +1264,8 @@ var csModAuthenticate = function csModAuthenticate(secret, _this) {
       _this.authenticate(secret);
     }, 500);
   }
+
+  return _this;
 };
 
 /**
@@ -1280,7 +1286,7 @@ var csModHistory = function csModHistory(channel, limit, opts, _this) {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel: channel,
       privateKey: privateKey,
       limit: limit,
@@ -1302,7 +1308,12 @@ var csModHistory = function csModHistory(channel, limit, opts, _this) {
       _this.history(channel, limit, opts);
     }, 500);
   }
+
+  return _this;
 };
+
+var _encode = Symbol('encode');
+var _awaitMessage = Symbol('awaitMessage');
 
 /**
  * Creates a new CatSnake client.
@@ -1324,54 +1335,62 @@ var CatSnake = function () {
 
     babelHelpers.classCallCheck(this, CatSnake);
 
+    this.symbols = {
+      _encode: _encode,
+      _awaitMessage: _awaitMessage
+    };
+
     this.socket = new WebSocket(address);
     this.socket.binaryType = 'arraybuffer';
 
     this.connected = false;
-
-    // Genrate a unique clientid
-    this.client = options.clientId ? options.clientId : csModClientid();
-
-    this.commonName = options.commonName ? options.commonName : config.defaultName;
-
-    this.bypassThrottle = options.bypassThrottle ? options.bypassThrottle : false;
+    this.client = options.clientId || csModClientid();
+    this.commonName = options.commonName || catsnakeConfig.defaultName;
+    this.bypassThrottle = options.bypassThrottle || false;
+    this.listeners = [];
 
     // Fired when the connection is made to the server
-    this.socket.onopen = function (event) {
+    this.socket.onopen = function () {
       _this.connected = true;
-
       // Make sure we tell the server we're leaving.
       window.onbeforeunload = function () {
         _this.socket.close();
       };
     };
 
-    this.listeners = [];
-
     this.socket.onmessage = function (msg) {
       var decodedMsg = msgpack.decode(new Uint8Array(msg.data));
 
       _this.listeners.map(function (l) {
-        l(decodedMsg);
+        return l(decodedMsg);
       });
     };
   }
 
+  /**
+   * Add function as a listener that will be called whenever a message comes in.
+   * @function _awaitMessage (internal/private)
+   * @param {function} listener - the function to execute when a message comes in.
+  */
+
+
   babelHelpers.createClass(CatSnake, [{
-    key: 'awaitMessage',
-    value: function awaitMessage(listener) {
+    key: _awaitMessage,
+    value: function value(listener) {
       this.listeners.push(listener);
     }
+
+    /**
+     * Tries to return a binary blob.
+     * @function _encode (internal)
+     * @param {object} data - the object to attempt to encode
+     * @callback {string} - Returns an encoded blob
+    */
+
   }, {
-    key: 'stringify',
-    value: function stringify(data, callback) {
-      /**
-       * Tries to return a stringified object.
-       * @function stringify (internal)
-       * @param {object} data - the object to attempt to stringify
-       * @callback {string} - Returns a stringified object
-      */
-      return csModStringify(data, callback, this);
+    key: _encode,
+    value: function value(data, callback) {
+      return csModEncode(data, callback, this);
     }
 
     /**

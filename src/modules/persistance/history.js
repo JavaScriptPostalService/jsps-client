@@ -16,7 +16,7 @@ export const csModHistory = (channel, limit, opts, _this) => {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       channel,
       privateKey,
       limit,
@@ -38,4 +38,6 @@ export const csModHistory = (channel, limit, opts, _this) => {
       _this.history(channel, limit, opts);
     }, 500);
   }
+
+  return _this;
 };

@@ -15,7 +15,7 @@ export const csModPublish = (channel, data, privateKey, _this) =>
     // If we're connected, let's go ahead and publish our payload.
     if (_this.connected) {
       // Safely stringify our data before sending it to the server.
-      _this.stringify({
+      _this[_this.symbols._encode]({
         channel,
         privateKey,
         payload: data,
@@ -31,7 +31,7 @@ export const csModPublish = (channel, data, privateKey, _this) =>
         _this.socket.send(payload);
 
         // Wait for success message to come back from server
-        _this.awaitMessage(msg => {
+        _this[_this.symbols._awaitMessage](msg => {
           if (msg.metadata.id === uuid) {
             resolve(msg);
           }

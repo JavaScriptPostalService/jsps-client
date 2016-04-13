@@ -8,7 +8,7 @@ export const csModAuthenticate = (secret, _this) => {
   // If we're connected, let's go ahead and publish our payload.
   if (_this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this.stringify({
+    _this[_this.symbols._encode]({
       metadata: {
         time: Date.now(),
         client: _this.client,
@@ -28,4 +28,6 @@ export const csModAuthenticate = (secret, _this) => {
       _this.authenticate(secret);
     }, 500);
   }
+
+  return _this;
 };
