@@ -29,7 +29,7 @@ For quick use you can simply include catsnke in your `<head>`.
 
 For installation with npm just install with
 ```bash
-npm i -save pubsub
+npm i --save pubsub
 ```
 and then require it
 ```javascript
