@@ -65,28 +65,17 @@ class CatSnake {
     };
   }
 
-  /**
-   * Add function as a listener that will be called whenever a message comes in.
-   * @function _awaitMessage (internal/private)
-   * @param {function} listener - the function to execute when a message comes in.
-  */
   [_awaitMessage](listener) {
     this.listeners.push(listener);
   }
 
-  /**
-   * Tries to return a binary blob.
-   * @function _encode (internal)
-   * @param {object} data - the object to attempt to encode
-   * @callback {string} - Returns an encoded blob
-  */
   [_encode](data, callback) {
     return csModEncode(data, callback, this);
   }
 
   /**
    * csModPublish module.
-   * @module core/csModPublish
+   * @function core/csModPublish
    * @param {string} channel - the channel to publish to
    * @param {object} data - the object to publish
    * @param {string} privateKey - optional private key for private channels
