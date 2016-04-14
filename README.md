@@ -1,4 +1,4 @@
-![Logo](https://avatars1.githubusercontent.com/u/18083257?v=3&s=100)
+[![Logo](https://avatars1.githubusercontent.com/u/18083257?v=3&s=100)](http://catsnake.io)
 
  [![npm](https://img.shields.io/npm/v/pubsub.svg?style=flat-square)]()
 [![GitHub issues](https://img.shields.io/github/issues/catsnakejs/catsnake-client.svg?style=flat-square)](https://github.com/catsnakejs/catsnake-client/issues)
@@ -105,6 +105,8 @@ cs.unsubscribe('General');
 ### Private Servers
 In the event that you are trying to access a private server, after connecting to the server
 be sure to authenticate with the correct secret.
+
+Catsnake also provides chaining for most methods, so you can prepend authenticate to the beginning of your subscribe function to keep things clean!
 
 ```javascript
 cs.authenticate('mostSecureSecretEver');
