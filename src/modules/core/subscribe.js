@@ -12,55 +12,45 @@ export const csModSubscribe = function csModSubscribe(channel, callback, opts) {
   const options = opts || {};
   const privateKey = options.privateKey || false;
 
-  if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      channel,
-      privateKey,
-      noself: (options.noself) ? options.noself : false,
-      secret: (options.accessToken) ? options.accessToken : false,
-      private: (options.private) ? options.private : false,
-      metadata: {
-        time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'subscribe',
-      },
-    }, payload => {
-      // Send off the payload to the server letting it know we're subscribing to a channel
-      this.socket.send(payload);
 
-      // Whenever the server has new info it will tell us here.
-      this[this.symbols._awaitMessage](msg => {
-        if (msg.channel === channel) {
-          callback(msg);
-        }
-      });
+  this[this.symbols._encode]({
+    channel,
+    privateKey,
+    noself: (options.noself) ? options.noself : false,
+    secret: (options.accessToken) ? options.accessToken : false,
+    private: (options.private) ? options.private : false,
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'subscribe',
+    },
+  }, payload => {
+    // Send off the payload to the server letting it know we're subscribing to a channel
+    this.socket.send(payload);
 
-      // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
-      window.onbeforeunload = () => {
-        this[this.symbols._encode]({
-          channel,
-          privateKey,
-          metadata: {
-            time: Date.now(),
-            client: this.client,
-            commonName: this.commonName,
-            type: 'unsubscribe',
-          },
-        }, pl => {
-          this.socket.send(pl);
-        });
-      };
+    // Whenever the server has new info it will tell us here.
+    this[this.symbols._awaitMessage](msg => {
+      if (msg.channel === channel) {
+        callback(msg);
+      }
     });
-  } else {
-    // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(() => {
-      // call self with the same params that were initially passed.
-      this.subscribe(channel, callback, opts);
-    }, 500);
-  }
 
+    // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
+    window.onbeforeunload = () => {
+      this[this.symbols._encode]({
+        channel,
+        privateKey,
+        metadata: {
+          time: Date.now(),
+          client: this.client,
+          commonName: this.commonName,
+          type: 'unsubscribe',
+        },
+      }, pl => {
+        this.socket.send(pl);
+      });
+    };
+  });
   return this;
 };

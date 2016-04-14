@@ -10,11 +10,16 @@ import {
   csModGrant,
   csModDeny,
   csModAuthenticate,
+  csModOn,
 } from './modules/core/index';
 
 import {
   csModHistory,
 } from './modules/persistance/index';
+
+import {
+  csModChannels,
+} from './modules/admin/index';
 
 const _encode = Symbol('encode');
 const _awaitMessage = Symbol('awaitMessage');
@@ -74,6 +79,15 @@ class CatSnake {
   }
 
   /**
+   * csModOn module.
+   * @module core/csModOn
+   * @param {function} callback - called when the socket is connected
+  */
+  on(callback) {
+    return csModOn.call(this, callback);
+  }
+
+  /**
    * csModPublish module.
    * @function core/csModPublish
    * @param {string} channel - the channel to publish to
@@ -83,6 +97,16 @@ class CatSnake {
   */
   publish(channel, data, privateKey) {
     return csModPublish.call(this, channel, data, privateKey);
+  }
+
+  /**
+   * List channels all channels, and private keys. (admin only)
+   * @function channels
+   * @param {string} adminToken - admin token for server
+   * @returns {promise} - returns new promise, resolved when server gets message
+  */
+  channels(adminToken) {
+    return csModChannels.call(this, adminToken);
   }
 
   /**

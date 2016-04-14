@@ -41,6 +41,12 @@ See [pubsub-server](http://npmjs.com/package/pubsub-server) to run your own serv
 const cs = new PubSub('ws://catsnake.io:3081', {
     commonName: 'A Random Catsnake'
 });
+
+// It is best practice to wrap the rest of your Catsnake code in the on method.
+// this ensures that you're connected to the websocket server before executing.
+cs.on(() => {
+  // Your code here.
+});
 ```
 
 ## Methods

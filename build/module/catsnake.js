@@ -1011,39 +1011,28 @@ var csModPublish = function csModPublish(channel, data, privateKey) {
 
   return new Promise(function (resolve) {
     var uuid = csModUUID();
-    // If we're connected, let's go ahead and publish our payload.
-    if (_this.connected) {
-      // Safely stringify our data before sending it to the server.
-      _this[_this.symbols._encode]({
-        channel: channel,
-        privateKey: privateKey,
-        payload: data,
-        metadata: {
-          time: Date.now(),
-          client: _this.client,
-          commonName: _this.commonName,
-          id: uuid,
-          type: 'publish'
-        }
-      }, function (payload) {
-        // Send off the payload to the server signifiying we're using a standard publish method.
-        _this.socket.send(payload);
+    _this[_this.symbols._encode]({
+      channel: channel,
+      privateKey: privateKey,
+      payload: data,
+      metadata: {
+        time: Date.now(),
+        client: _this.client,
+        commonName: _this.commonName,
+        id: uuid,
+        type: 'publish'
+      }
+    }, function (payload) {
+      // Send off the payload to the server signifiying we're using a standard publish method.
+      _this.socket.send(payload);
 
-        // Wait for success message to come back from server
-        _this[_this.symbols._awaitMessage](function (msg) {
-          if (msg.metadata.id === uuid) {
-            resolve(msg);
-          }
-        });
+      // Wait for success message to come back from server
+      _this[_this.symbols._awaitMessage](function (msg) {
+        if (msg.metadata.id === uuid) {
+          resolve(msg);
+        }
       });
-    } else {
-      // Crap, Something is wrong and we're not connected yet, let's try again later.
-      console.warn('Failed to connect, attempting again in 1 second.');
-      setTimeout(function () {
-        // call self with the same params that were initially passed.
-        _this.publish(channel, data, privateKey);
-      }, 500);
-    }
+    });
   });
 };
 
@@ -1063,32 +1052,21 @@ var csModInfo = function csModInfo(channel, data, opts) {
   var options = opts || {};
   var privateKey = options.privateKey || false;
 
-  // If we're connected, let's go ahead and publish our payload.
-  if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      channel: channel,
-      privateKey: privateKey,
-      payload: data,
-      metadata: {
-        time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'info'
-      }
-    }, function (payload) {
-      // Send off the payload to the frontend that will request channel info
-      _this.socket.send(payload);
-    });
-  } else {
-    // Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.info(channel, data, opts);
-    }, 500);
-  }
-
+  // Safely stringify our data before sending it to the server.
+  this[this.symbols._encode]({
+    channel: channel,
+    privateKey: privateKey,
+    payload: data,
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'info'
+    }
+  }, function (payload) {
+    // Send off the payload to the frontend that will request channel info
+    _this.socket.send(payload);
+  });
   return this;
 };
 
@@ -1108,56 +1086,45 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts) {
   var options = opts || {};
   var privateKey = options.privateKey || false;
 
-  if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      channel: channel,
-      privateKey: privateKey,
-      noself: options.noself ? options.noself : false,
-      secret: options.accessToken ? options.accessToken : false,
-      private: options.private ? options.private : false,
-      metadata: {
-        time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'subscribe'
+  this[this.symbols._encode]({
+    channel: channel,
+    privateKey: privateKey,
+    noself: options.noself ? options.noself : false,
+    secret: options.accessToken ? options.accessToken : false,
+    private: options.private ? options.private : false,
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'subscribe'
+    }
+  }, function (payload) {
+    // Send off the payload to the server letting it know we're subscribing to a channel
+    _this.socket.send(payload);
+
+    // Whenever the server has new info it will tell us here.
+    _this[_this.symbols._awaitMessage](function (msg) {
+      if (msg.channel === channel) {
+        callback(msg);
       }
-    }, function (payload) {
-      // Send off the payload to the server letting it know we're subscribing to a channel
-      _this.socket.send(payload);
-
-      // Whenever the server has new info it will tell us here.
-      _this[_this.symbols._awaitMessage](function (msg) {
-        if (msg.channel === channel) {
-          callback(msg);
-        }
-      });
-
-      // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
-      window.onbeforeunload = function () {
-        _this[_this.symbols.encode]({
-          channel: channel,
-          privateKey: privateKey,
-          metadata: {
-            time: Date.now(),
-            client: _this.client,
-            commonName: _this.commonName,
-            type: 'unsubscribe'
-          }
-        }, function (pl) {
-          _this.socket.send(pl);
-        });
-      };
     });
-  } else {
-    // Crap, Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.subscribe(channel, callback, opts);
-    }, 500);
-  }
 
+    // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
+    window.onbeforeunload = function () {
+      _this[_this.symbols._encode]({
+        channel: channel,
+        privateKey: privateKey,
+        metadata: {
+          time: Date.now(),
+          client: _this.client,
+          commonName: _this.commonName,
+          type: 'unsubscribe'
+        }
+      }, function (pl) {
+        _this.socket.send(pl);
+      });
+    };
+  });
   return this;
 };
 
@@ -1171,31 +1138,20 @@ var csModSubscribe = function csModSubscribe(channel, callback, opts) {
 var csModGrant = function csModGrant(channel, client, secret) {
   var _this = this;
 
-  // If we're connected, let's go ahead and publish our payload.
-  if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      channel: channel,
-      client: client,
-      secret: secret,
-      metadata: {
-        time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'grant'
-      }
-    }, function (payload) {
-      // Send off the payload to the frontend that will attempt to deny a client
-      _this.socket.send(payload);
-    });
-  } else {
-    // Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.grant(channel, client, secret);
-    }, 500);
-  }
+  this[this.symbols._encode]({
+    channel: channel,
+    client: client,
+    secret: secret,
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'grant'
+    }
+  }, function (payload) {
+    // Send off the payload to the frontend that will attempt to deny a client
+    _this.socket.send(payload);
+  });
 
   return this;
 };
@@ -1210,32 +1166,20 @@ var csModGrant = function csModGrant(channel, client, secret) {
 var csModDeny = function csModDeny(channel, client, secret) {
   var _this = this;
 
-  // If we're connected, let's go ahead and publish our payload.
-  if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      channel: channel,
-      client: client,
-      secret: secret,
-      metadata: {
-        time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'deny'
-      }
-    }, function (payload) {
-      // Send off the payload to the frontend that will attempt to deny a client
-      _this.socket.send(payload);
-    });
-  } else {
-    // Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.deny(channel, client, secret);
-    }, 500);
-  }
-
+  this[this.symbols._encode]({
+    channel: channel,
+    client: client,
+    secret: secret,
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'deny'
+    }
+  }, function (payload) {
+    // Send off the payload to the frontend that will attempt to deny a client
+    _this.socket.send(payload);
+  });
   return this;
 };
 
@@ -1247,31 +1191,36 @@ var csModDeny = function csModDeny(channel, client, secret) {
 var csModAuthenticate = function csModAuthenticate(secret) {
   var _this = this;
 
-  // If we're connected, let's go ahead and publish our payload.
+  this[this.symbols._encode]({
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'authenticate',
+      secret: secret
+    }
+  }, function (payload) {
+    // Send off the payload to the frontend that will attempt to deny a client
+    _this.socket.send(payload);
+  });
+  return this;
+};
+
+/**
+ * csModOn module.
+ * @module core/csModOn
+ * @param {function} callback - called when the socket is connected
+*/
+var csModOn = function csModOn(callback) {
+  var _this = this;
+
   if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      metadata: {
-        time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'authenticate',
-        secret: secret
-      }
-    }, function (payload) {
-      // Send off the payload to the frontend that will attempt to deny a client
-      _this.socket.send(payload);
-    });
+    callback();
   } else {
-    // Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.authenticate(secret);
+      _this.on(callback);
     }, 500);
   }
-
-  return this;
 };
 
 /**
@@ -1289,34 +1238,54 @@ var csModHistory = function csModHistory(channel, limit, opts) {
   // level null or undefined exceptions.
   var options = opts || {};
   var privateKey = options.privateKey || false;
+  // Safely stringify our data before sending it to the server.
+  this[this.symbols._encode]({
+    channel: channel,
+    privateKey: privateKey,
+    limit: limit,
+    metadata: {
+      time: Date.now(),
+      client: this.client,
+      commonName: this.commonName,
+      type: 'history'
+    }
+  }, function (payload) {
+    // Send off the payload to the frontend that will request a batch of history
+    _this.socket.send(payload);
+  });
+  return this;
+};
+
+/**
+ * csModChannels module.
+ * @module admin/csModChannels
+ * @param {string} channel - the channel to look at
+ * @param {object} data - additional information for request
+ * @param {object} opts - additional options for subscriptions
+*/
+var csModChannels = function csModChannels(adminToken) {
+  var _this = this;
 
   // If we're connected, let's go ahead and publish our payload.
-  if (this.connected) {
-    // Safely stringify our data before sending it to the server.
-    this[this.symbols._encode]({
-      channel: channel,
-      privateKey: privateKey,
-      limit: limit,
+  return new Promise(function (resolve) {
+    _this[_this.symbols._encode]({
+      adminToken: adminToken,
       metadata: {
         time: Date.now(),
-        client: this.client,
-        commonName: this.commonName,
-        type: 'history'
+        client: _this.client,
+        commonName: _this.commonName,
+        type: 'channels'
       }
     }, function (payload) {
-      // Send off the payload to the frontend that will request a batch of history
+      // Send off the payload to the frontend this will request channel info
       _this.socket.send(payload);
+      _this[_this.symbols._awaitMessage](function (msg) {
+        if (msg.metadata.type === 'channels') {
+          resolve(msg);
+        }
+      });
     });
-  } else {
-    // Something is wrong and we're not connected yet, let's try again later.
-    console.warn('Failed to connect, attempting again in 1 second.');
-    setTimeout(function () {
-      // call self with the same params that were initially passed.
-      _this.history(channel, limit, opts);
-    }, 500);
-  }
-
-  return this;
+  });
 };
 
 var _encode = Symbol('encode');
@@ -1386,6 +1355,18 @@ var CatSnake = function () {
     }
 
     /**
+     * csModOn module.
+     * @module core/csModOn
+     * @param {function} callback - called when the socket is connected
+    */
+
+  }, {
+    key: 'on',
+    value: function on(callback) {
+      return csModOn.call(this, callback);
+    }
+
+    /**
      * csModPublish module.
      * @function core/csModPublish
      * @param {string} channel - the channel to publish to
@@ -1398,6 +1379,19 @@ var CatSnake = function () {
     key: 'publish',
     value: function publish(channel, data, privateKey) {
       return csModPublish.call(this, channel, data, privateKey);
+    }
+
+    /**
+     * List channels all channels, and private keys. (admin only)
+     * @function channels
+     * @param {string} adminToken - admin token for server
+     * @returns {promise} - returns new promise, resolved when server gets message
+    */
+
+  }, {
+    key: 'channels',
+    value: function channels(adminToken) {
+      return csModChannels.call(this, adminToken);
     }
 
     /**
