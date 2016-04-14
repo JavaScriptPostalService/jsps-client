@@ -15,8 +15,8 @@ setInterval(() => {
   requests.shift();
 }, 1000 / catsnakeConfig.requestsPerSecond);
 
-export const csModThrottle = (data, callback, _this) => {
-  if (_this.bypassThrottle) {
+export const csModThrottle = function csModThrottle(data, callback) {
+  if (this.bypassThrottle) {
     // This client has chosen to bypass throttling, dispatch message
     callback(data);
   } else {

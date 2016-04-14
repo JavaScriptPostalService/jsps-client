@@ -8,11 +8,11 @@ import { csModThrottle } from './throttle';
  * @param {object} data - the object to attempt to encode
  * @callback {function} callback - Returns a stringified object
 */
-export const csModEncode = (data, callback, _this) => {
+export const csModEncode = function csModEncode(data, callback) {
   // Client side packet throttling, enforces serverside as well.
-  csModThrottle(data, throttledData => {
+  csModThrottle.call(this, data, throttledData => {
     callback(
       msgpack.encode(throttledData)
     );
-  }, _this);
+  });
 };

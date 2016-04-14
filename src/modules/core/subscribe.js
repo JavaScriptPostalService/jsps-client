@@ -4,18 +4,17 @@
  * @param {string} channel - the channel to subscribe to
  * @callback {function} callback - new messages are returned here via msg
  * @param {object} opts - additional options for subscriptions
- * @param {this} _this - this inheratance
 */
-export const csModSubscribe = (channel, callback, opts, _this) => {
+export const csModSubscribe = function csModSubscribe(channel, callback, opts) {
   // Since options are optional, if there are no options passed, we'll drop in
   // an empty object if options are false or undefined. This will help fix top
   // level null or undefined exceptions.
   const options = opts || {};
   const privateKey = options.privateKey || false;
 
-  if (_this.connected) {
+  if (this.connected) {
     // Safely stringify our data before sending it to the server.
-    _this[_this.symbols._encode]({
+    this[this.symbols._encode]({
       channel,
       privateKey,
       noself: (options.noself) ? options.noself : false,
@@ -23,16 +22,16 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
       private: (options.private) ? options.private : false,
       metadata: {
         time: Date.now(),
-        client: _this.client,
-        commonName: _this.commonName,
+        client: this.client,
+        commonName: this.commonName,
         type: 'subscribe',
       },
     }, payload => {
       // Send off the payload to the server letting it know we're subscribing to a channel
-      _this.socket.send(payload);
+      this.socket.send(payload);
 
       // Whenever the server has new info it will tell us here.
-      _this[_this.symbols._awaitMessage](msg => {
+      this[this.symbols._awaitMessage](msg => {
         if (msg.channel === channel) {
           callback(msg);
         }
@@ -40,17 +39,17 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
 
       // When we go to leave be sure to tell the server we're leaving, it would be rude not to.
       window.onbeforeunload = () => {
-        _this[_this.symbols.encode]({
+        this[this.symbols._encode]({
           channel,
           privateKey,
           metadata: {
             time: Date.now(),
-            client: _this.client,
-            commonName: _this.commonName,
+            client: this.client,
+            commonName: this.commonName,
             type: 'unsubscribe',
           },
         }, pl => {
-          _this.socket.send(pl);
+          this.socket.send(pl);
         });
       };
     });
@@ -59,9 +58,9 @@ export const csModSubscribe = (channel, callback, opts, _this) => {
     console.warn('Failed to connect, attempting again in 1 second.');
     setTimeout(() => {
       // call self with the same params that were initially passed.
-      _this.subscribe(channel, callback, opts);
+      this.subscribe(channel, callback, opts);
     }, 500);
   }
 
-  return _this;
+  return this;
 };

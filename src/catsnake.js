@@ -70,7 +70,7 @@ class CatSnake {
   }
 
   [_encode](data, callback) {
-    return csModEncode(data, callback, this);
+    return csModEncode.call(this, data, callback);
   }
 
   /**
@@ -82,7 +82,7 @@ class CatSnake {
    * @returns {promise} - returns new promise, resolved when server gets message
   */
   publish(channel, data, privateKey) {
-    return csModPublish(channel, data, privateKey, this);
+    return csModPublish.call(this, channel, data, privateKey);
   }
 
   /**
@@ -94,7 +94,7 @@ class CatSnake {
    * @param {string} opts.privateKey - private key used for getting info from private channels
   */
   info(channel, data, opts) {
-    csModInfo(channel, data, opts, this);
+    csModInfo.call(this, channel, data, opts);
   }
 
   /**
@@ -106,7 +106,7 @@ class CatSnake {
    * @param {string} opts.privateKey - private key used for getting history from private channels
   */
   history(channel, limit, opts) {
-    csModHistory(channel, limit, opts, this);
+    csModHistory.call(this, channel, limit, opts);
   }
 
   /**
@@ -122,7 +122,7 @@ class CatSnake {
    * @param {string} opts.private - make this channel private, clients can only connect if granted access
   */
   subscribe(channel, callback, opts) {
-    csModSubscribe(channel, callback, opts, this);
+    csModSubscribe.call(this, channel, callback, opts);
   }
 
   /**
@@ -133,7 +133,7 @@ class CatSnake {
    * @param {string} secret - the secret key associated with this channel
   */
   deny(channel, client, secret) {
-    return csModDeny(channel, client, secret, this);
+    return csModDeny.call(this, channel, client, secret);
   }
 
   /**
@@ -144,7 +144,7 @@ class CatSnake {
    * @param {string} secret - the secret key associated with this channel
   */
   grant(channel, client, secret) {
-    return csModGrant(channel, client, secret, this);
+    return csModGrant.call(this, channel, client, secret);
   }
 
   /**
@@ -153,7 +153,7 @@ class CatSnake {
    * @param {string} secret - the secret key for the private server
   */
   authenticate(secret) {
-    return csModAuthenticate(secret, this);
+    return csModAuthenticate.call(this, secret);
   }
 }
 /*
